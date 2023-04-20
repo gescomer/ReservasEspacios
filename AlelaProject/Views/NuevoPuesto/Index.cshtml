@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> Area = (List<SelectListItem>)ViewBag.Data;
+    List<SelectListItem> TipoObjeto = (List<SelectListItem>)ViewBag.Data2;
+}
+<br />
+<br />
+<div class="alert-danger">
+    @ViewBag.Error
+</div>
+<br />
+<br />
+<div class="container border">
+    <h3 class="text-info center" style="padding-top:2em;padding-left:1em">Nuevo Elemento de Trabajo</h3>
+    <hr />
+    <div class="form-group">
+        <form class="form-group" asp-action="Index" id="formulario">
+            <br />
+            <div class="row col-md-12">
+                <div class="form-group col-md-3">
+                    <label>Seleccione Area<span style="color:red"><b> *</b></span></label>
+                    @Html.DropDownList("Area", Area, "Selecciona Area", new { @class = "form-control" })
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label>Nombre Objeto<span style="color:red"><b> *</b></span></label>
+                        <input id="Nombre" name="Nombre" class="form-control" type="text" style="width:260px" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label>Código<span style="color:red"><b> *</b></span></label>
+                        <input id="Codigo" name="Codigo" class="form-control" type="text" style="width:260px" />
+                    </div>
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Seleccione Tipo Objeto<span style="color:red"><b> *</b></span></label>
+                    @Html.DropDownList("TipoObjeto", TipoObjeto, "Selecciona Tipo Objeto", new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+            <br />
+            <span class="text-info left row" style="padding-left:1em;font-size:18px; font-weight:bold">Complemento</span>
+            <br />
+            <br />
+            <div class="col-md-12">
+                <br />
+                @if (ViewBag.Datos3 != null)
+                {
+                    foreach (var item in ViewBag.Datos3)
+                    {
+                        <table><tr id="itemNov"><td><input type="checkbox" id="@item.idComplemento" checked="@item.Seleccioando" /><span style="font-size:15px;font-weight:bold; color:black">    @item.NombreComplemento</span></td></tr></table>}
+                }
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div class="row col-md-4">
+    <div class="form-group col-md-6 text-left" style="width:300px">
+        <button class="btn btn-info" onclick="lista();" style="width:150px">Aceptar</button>
+    </div>
+    <div class="form-group col-md-6 text-right" style="width:300px;">
+        <button class="btn btn-dark" type="button" style="width:150px" onclick="location.href='@Url.Action("GoToBack", "NuevoPuesto")'">Cancelar</button>
+    </div>
+</div>
+<script>
+    var lista = function () {
+        var Nombre = $("#Nombre").val();
+        var Codigo = $("#Codigo").val();
+        var Area = document.getElementById('Area').selectedOptions[0].value;
+        var TipoObjeto = document.getElementById('TipoObjeto').selectedOptions[0].value;
+
+        var arregloitems = [];
+
+        var coma = "";
+
+        $("#itemNov td input[type=checkbox]").each(function (index, val) {
+
+            var current = $(val).attr("Id");
+
+            var isChecked = $("#" + current).is(":checked", true);
+
+            if (isChecked) {
+                arregloitems.push(current);
+            }
+
+        })
+        location.href = '@Url.Action("IndexAceptarmuliple", "NuevoPuesto")?ids=' + arregloitems + '&Area=' + Area + '&Nombre=' + Nombre + '&Codigo=' + Codigo + '&TipoObjeto=' + TipoObjeto;
+    }
+</script>

@@ -1,0 +1,314 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<br />
+<div class="alert-danger">
+    @ViewBag.Error
+</div>
+<br />
+<br />
+<div class="container row" style="font-family:sans-serif; font-size:14px">
+    <div class="col-md-12">
+        <div class="text-left">
+            <div class="text-center">
+                <h3 class="" style="font-size:35px;color:cadetblue"> Mis Reservas</h3>
+            </div>
+            <hr />
+            @*<a class="btn btn-outline-success text-right" asp-area="" href="@Url.Action("Index", "PreguntasCrear")" asp-action="Index">Nueva Pregunta</a>*@
+        </div>
+    </div>
+    <div class="col-md-12">
+        @if (ViewBag.Datos != null)
+        {
+            <br />
+            <br />
+            <table id="tblProyecto" class="table" width="100%">
+                <thead>
+                    <tr>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Vencida
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Area
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Tipo
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Código
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Nombre Asignado
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Fecha Reserva
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Hora Inicio
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Hora Fin
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Hora Almuerzo
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Eliminar
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Datos)
+                    {
+                        <tr>
+                            @if (item.Eliminar == "Si")
+                            {
+                                <td style="font-weight:bold;">
+                                    <span style="font-size:12px" class="badge bg-green pull-center">@item.Eliminar</span>
+                                </td>
+                            }
+                            else if (item.Eliminar == "Hoy")
+                            {
+                                <td style="font-weight:bold;">
+                                    <span style="font-size:12px" class="badge bg-purple pull-center">@item.Eliminar</span>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="font-weight:bold;">
+                                    <span style="font-size:12px" class="badge bg-warning pull-center">@item.Eliminar</span>
+                                </td>
+                            }
+
+                            <td>
+                                @item.NombreArea
+                            </td>
+                            <td>
+                                @item.TipoObjeto
+                            </td>
+                            <td>
+                                @item.Codigo
+                            </td>
+                            <td>
+                                @item.Nombre
+                            </td>
+                            <td>
+                                <span class="badge bg-blue-sky pull-center">@item.FechaReserva</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-blue pull-center">@item.HoraInicio</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-blue pull-center">@item.HoraFin</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-blue-sky pull-center">@item.NombreHora</span>
+                            </td>
+                            <td>
+                                @if (item.Eliminar == "No")
+                                {
+                                    <div class="col-sm-2 col-6 text-center verdes cursor" onclick="mostrarResumen(@item.idReserva);"
+                                         data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.Nombre">
+                                        @*<i class="fa fa-desktop fa-align-center" style="font-size:50px"></i>*@
+                                        <span class="badge bg-warning pull-center"><img src="~/img/trash.png" width="18" height="18" /></span>
+                                    </div>
+                                }
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="resumenModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="center">Eliminar Reserva</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Reserva:</label>
+                                        <h6 id="idReserva" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Area:</label>
+                                        <h6 id="NombreArea" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Tipo Objeto:</label>
+                                        <h6 id="TipoObjeto" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Codigo:</label>
+                                        <h6 id="Codigo" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Nombre:</label>
+                                        <h6 id="Nombre" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Fecha Reserva:</label>
+                                        <h6 id="FechaReserva" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Hora Inicio:</label>
+                                        <h6 id="HoraInicio" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Hora Fin:</label>
+                                        <h6 id="HoraFin" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" style="width:150px" onclick="liberarReserva();">Eliminar Reserva</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblProyecto").DataTable({
+                language:
+                {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+<script type="text/javascript">
+    function mostrarResumen(codigo) {
+
+        var v  = '@ViewBag.DatosMapa';
+
+        //if (v != undefined) {
+        var array = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.MiReservas>)ViewBag.Datos).Select(Mapa => new
+            {
+                idReserva = Mapa.idReserva,
+                NombreArea = Mapa.NombreArea,
+                TipoObjeto = Mapa.TipoObjeto,
+                Codigo = Mapa.Codigo,
+                Nombre = Mapa.Nombre,
+                FechaReserva = Mapa.FechaReserva,
+                HoraInicio = Mapa.HoraInicio,
+                HoraFin = Mapa.HoraFin,
+            }) ) );
+
+            for (var i = 0; i < array.length; i += 1) {
+
+                if (array[i].idReserva == codigo) {
+                    $("#idReserva").html(array[i].idReserva);
+                    $("#NombreArea").html(array[i].NombreArea);
+                    $("#TipoObjeto").html(array[i].TipoObjeto);
+                    $("#Codigo").html(array[i].Codigo);
+                    $("#Nombre").html(array[i].Nombre);
+                    $("#FechaReserva").html(array[i].FechaReserva);
+                    $("#HoraInicio").html(array[i].HoraInicio);
+                    $("#HoraFin").html(array[i].HoraFin);
+                }
+            }
+
+        $('#resumenModal').modal('show');
+    }
+</script>
+<script>
+    function liberarReserva(event) {
+
+        var idObjetod = $("#idReserva").text();
+        var reserva = $("#FechaReserva").text();
+        var Nombre = $("#Nombre").text();
+
+        if (idObjetod == "") {
+            swal({
+                title: 'Error',
+                text: "No se reconoce el numero de la reserva",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea actualizar la información ?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    location.href = '@Url.Action("EliminarReserva", "MisReservas")?ids=' + idObjetod + '&reserva=' + reserva + '&NombrePuesto=' + Nombre;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+
+        return false;
+    }
+</script>
+
+

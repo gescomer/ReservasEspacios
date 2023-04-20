@@ -1,0 +1,10 @@
+﻿.fondo {
+    background: url('../img/PLANO_1.jpg')no-repeat center top;
+    /*background: url(../../img/PLANO1FINAL.png)no-repeat center top;*/
+    width: 1000px;
+    height: 700px;
+    background-size: contain;
+    background-position: top left;
+    background-repeat: no-repeat;
+    border: solid 1px;
+}

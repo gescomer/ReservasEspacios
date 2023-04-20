@@ -1,0 +1,295 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<div class="container-xxl">
+    <br />
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>Usuarios</h3>
+                    <h5>@ViewBag.Usuarios</h5>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h3>Puestos</h3>
+                    <h5>@ViewBag.Objetos</h5>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-dark">
+                <div class="inner">
+                    <h3>Ocupación</h3>
+                    <h5>@ViewBag.Reservas</h5>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-orange">
+                <div class="inner">
+                    <h3>Disponibilidad</h3>
+                    <h5>@ViewBag.Disponibles</h5>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="card shadow col-md-12" style="height:100%">
+            <div class="card-header py-3 col-md-12">
+                <div class="col-md-9 left">
+                    <div class="col-xs-12">
+                        <h6 class="font-weight-bold text-primary">Reservas de espacios para el dia Actual <span class="badge bg-blue">@ViewBag.FechaConsulta</span> </h6>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    @if (ViewBag.reservashoy != null)
+                    {
+                        <br />
+                        <br />
+                        <table id="tblProyecto" class="table" width="100%" style="font-family:'Trebuchet MS'">
+                            <thead>
+                                <tr>
+                                    <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                        Nombre Completo
+                                    </td>
+                                    <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                        Puesto
+                                    </td>
+                                    <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                        Hora Entrada
+                                    </td>
+                                    <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                        Hora Salida
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in ViewBag.reservashoy)
+                                {
+                                    <tr>
+                                        <td>
+                                            @item.NombreCompleto
+                                        </td>
+                                        <td>
+                                            @item.Nombre
+                                        </td>
+                                        <td>
+                                            @item.HoraInicio
+                                        </td>
+                                        <td>
+                                            @item.HoraFin
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="col-md-12">
+            <div id="chart_div" style="width:500px; height:100%;"></div>
+        </div>
+        <br />
+        <div class="col-md-12">
+            <div id="chart_div2" style="width:500px; height:100%;"></div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script> @*src="https://www.google.com/jsapi"*@
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script> @*src=https://www.gstatic.com/charts/loader.js*@
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> @*src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"*@
+@*Graficos indice Mensual*@
+<script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                url: '@Url.Action("VisualizacionIndice", "TableroControl")',
+                success: function (result) {
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChartALP(result);
+                    });
+                },
+                Error: function () {
+                    alert('Error cargando los datos');
+                }
+            });
+        });
+
+    function drawChartALP(result) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Nombre Dia');
+        data.addColumn('number', 'Reservas');
+
+
+        var dataArray = [];
+
+        $.each(result, function (i, obj) {
+            dataArray.push([obj.NombreDia, obj.Numero]);
+        });
+
+        data.addRows(dataArray);
+
+        var options = {
+            title: "Reservas de espacios para la semana en curso",
+            width: 1080,
+            height: 500,
+            bar: { groupWidth: '20%' }
+
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+    }
+</script>
+<script>
+        $(document).ready(function () {
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json",
+                url: '@Url.Action("VisualizacionMasReservas", "TableroControl")',
+                success: function (result) {
+                    google.charts.load('current', {
+                        'packages': ['corechart']
+                    });
+                    google.charts.setOnLoadCallback(function () {
+                        drawChartreservaspersonas(result);
+                    });
+                },
+                Error: function () {
+                    alert('Error cargando los datos');
+                }
+            });
+        });
+
+    function drawChartreservaspersonas(result) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Nombre Completo');
+        data.addColumn('number', 'reservas');
+
+
+        var dataArray = [];
+
+        $.each(result, function (i, obj) {
+            dataArray.push([obj.NombreCompleto, obj.reservas]);
+        });
+
+        data.addRows(dataArray);
+
+        var options = {
+            title: "Top de usuarios que más reservan.",
+            width: 1080,
+            height: 500,
+            bar: { groupWidth: '20%' }
+
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div2'));
+
+        chart.draw(data, options);
+    }
+</script>
+<style>
+    .small-box {
+        border-radius: 0.25rem;
+        box-shadow: 0 0 1px #ffffff;
+        display: block;
+        margin-bottom: 20px;
+        position: relative;
+    }
+
+        .small-box > .inner {
+            padding: 10px;
+        }
+
+        .small-box h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 10px;
+            padding: 0;
+            white-space: nowrap;
+            color: #ffffff;
+        }
+
+        .small-box h5 {
+            font-size: 2rem;
+            font-weight: 100;
+            margin: 0 0 10px;
+            padding: 0;
+            white-space: nowrap;
+            color: #ffffff;
+        }
+</style>
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblProyecto").DataTable({
+                language:
+                {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
+        });
+    </script>
+}

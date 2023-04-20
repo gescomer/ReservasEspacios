@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*<link rel="icon" href="images/favicon.ico" type="image/ico" />*@
+
+    <title>@ViewBag.Title | Reserva Espacios Corporativos !</title>
+
+    <!-- Bootstrap -->
+    <link href="~/Vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="~/Vendors/fontawesome/css/font-awesome.min.css" rel="stylesheet" />
+    <!-- NProgress -->
+    <link href="~/Vendors/nprogress/nprogress.css" rel="stylesheet" />
+
+    <link href="~/Vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" />
+
+    <link href="~/Vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+
+    <!-- Custom Theme Style -->
+    <link href="~/Content/Alela/css/custom.min.css" rel="stylesheet" />
+
+    <!-- Theme style -->
+    @*<link rel="stylesheet" href="~/dist/css/adminlte.min.css">*@
+
+    @RenderSection("styles", required: false)
+
+
+</head>
+<body class="nav-md" style="font-family:sans-serif; font-size:14px">
+    <div class="container body">
+        <div class="main_container">
+            <div class="col-md-3 left_col">
+                <div class="left_col scroll-view ">
+                    <div class="navbar nav_title" style="align-content:center;margin-left:6px">
+                        <h4 class="" style="font-size:14px;font-weight:bold;color:white"><i class=""></i> <span class="span4"></span></h4>
+                    </div>
+
+
+                    <div class="clearfix"></div>
+                    <br />
+                    <!-- menu profile quick info -->
+                    <div class="profile clearfix">
+                        <div class="">
+                            <div class="">
+                                <img src="@ViewBag.urlima" alt="Imagen de Usuario" class="img-circle profile_img">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="">
+                            <h4 class="badge bg-blue" style="font-size:14px;font-weight:bold;color:white"><i class=""></i> <span class="span4">Reservas Espacios Corporativos</span></h4>
+                        </div>
+                        <hr />
+                        <div class="col-11 offset-1">
+                            <br />
+                            <span style="font-size: 14px; font-weight: bold; color: white; font-family: 'Arial Rounded MT'">@ViewBag.NombreCompleto</span>
+                        </div>
+                        <hr />
+                        <div class="col-10 offset-2">
+                            <span class="badge bg-blue pull-left" style="font-size: 14px; font-family: 'Arial Rounded MT'">@ViewBag.NombrePerfil</span>
+                        </div>
+                    </div>
+                    <!-- /menu profile quick info -->
+
+                    <hr class="white" />
+
+                    <!-- sidebar menu -->
+                    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                        <div class="menu_section">
+                            <h3>General</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-home"></i>Inicio<span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="@Url.Action("Index", "TableroControl")">Tablero Control</a></li>
+                                        <li><a href="@Url.Action("Index", "Calendario")">Calendario</a></li>
+                                        <li><a class="fa fa-building" href="@Url.Action("Index", "MapaCompleto")"><span style="font-family:Arial; color:#00ff7a">Conhydra</span></a></li>
+                                        <li><a class="fa fa-laptop" href="@Url.Action("Index", "MapaCompleto2")"><span style="font-family:Arial; color:#00ff7a">Gescomer</span></a></li>
+                                        <li><a href="@Url.Action("Index", "MisReservas")">Mis Reservas</a></li>
+                                        @*<li><a href="@Url.Action("Index", "Horario")">Horario</a></li>*@
+                                        <li><a href="@Url.Action("Index", "Almuerzo")">Horario Almuerzo</a></li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                        <div class="menu_section">
+                            <h3>Sedes</h3>
+                            @if (ViewBag.idPerfil == "1" || ViewBag.idPerfil == "3" || ViewBag.IdUser == "32")
+                            {@*<ul class="nav side-menu">
+                                        <li>
+                                            <a><i class="fa fa-building"></i>CCI<span class="fa fa-chevron-down"></span></a>
+
+                                            <ul class="nav child_menu">
+                                                <li><a href="@Url.Action("Index", "CSI")">CCI General</a></li>
+                                            </ul>
+                                        </li>
+
+                                    </ul>*@}
+                        </div>
+                        <div class="menu_section">
+                            <h3>Menú</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a><i class="fa fa-home"></i>Menu Principal<span class="fa fa-chevron-down"></span></a>
+                                    @if (ViewBag.idPerfil == "1" || ViewBag.idPerfil == "3")
+                                    {
+                        <ul class="nav child_menu">
+                            <li><a href="@Url.Action("Index", "Sedes")">Sedes</a><span class="badge bg-warning pull-right">new</span></li>
+                            <li><a href="@Url.Action("Index", "ReportesAsistencias")">Reportes Asistencias</a></li>
+                            <li><a href="@Url.Action("Index", "Areas")">Areas</a>@*<span class="badge bg-green pull-right">90%</span>*@</li>
+                            <li><a href="@Url.Action("Index", "Elementos")">Puestos</a></li>
+                            <li><a href="@Url.Action("Index", "NuevoPuesto")">Nuevo Puesto o Elemento</a></li>
+                            <li><a href="@Url.Action("Index", "Usuarios")">Usuarios</a></li>
+                        </ul>}
+
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- /sidebar menu -->
+                    <!-- /menu footer buttons -->
+                    <div class="sidebar-footer hidden-small">
+                        @*<a data-toggle="tooltip" data-placement="top" title="Settings">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+                                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Lock">
+                                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                            </a>*@
+                        <a data-toggle="tooltip" title="Salir" data-placement="top" href="@Url.Action("LoggOff", "Home")">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        </a>
+                    </div>
+                    <!-- /menu footer buttons -->
+                </div>
+            </div>
+
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                        <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <nav class="nav navbar-nav">
+                        <ul class=" navbar-right">
+                            <li class="nav-item dropdown open" style="padding-left: 15px;">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                    <img src="~/Content/images/user.png" alt=""><span style="font-size:14px;font-weight:bold;color:black">@ViewBag.NombreCompleto</span>
+                                </a>
+                                <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+
+                                    <a class="dropdown-item" style="font-size:14px;font-weight:bold;color:black" href="@Url.Action("LoggOff", "Home")"><i class="fa fa-sign-out pull-right"></i> Salir</a>
+                                </div>
+                            </li>
+
+                            <li role="presentation" class="nav-item dropdown open">
+                                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge bg-purple">0</span>
+                                </a>
+                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item">
+                                            <span class="image"><img src="~/Content/images/user.png" alt="Profile Image" /></span>
+                                            <span>
+                                                <span class="purple">Política</span>
+                                                <span class="time">Novedad</span>
+                                            </span>
+                                            <span class="message">
+
+                                            </span>
+                                        </a>
+                                    </li>
+                                    @*<li class="nav-item">
+                                            <a class="dropdown-item">
+                                                <span class="image"><img src="~/Content/images/user.png" alt="Profile Image" /></span>
+                                                <span>
+                                                    <span>John Smith</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item">
+                                                <span class="image"><img src="~/Content/images/user.png" alt="Profile Image" /></span>
+                                                <span>
+                                                    <span>John Smith</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="dropdown-item">
+                                                <span class="image"><img src="~/Content/images/user.png" alt="Profile Image" /></span>
+                                                <span>
+                                                    <span>John Smith</span>
+                                                    <span class="time">3 mins ago</span>
+                                                </span>
+                                                <span class="message">
+                                                    Film festivals used to be do-or-die moments for movie makers. They were where...
+                                                </span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <div class="text-center">
+                                                <a class="dropdown-item">
+                                                    <strong>See All Alerts</strong>
+                                                    <i class="fa fa-angle-right"></i>
+                                                </a>
+                                            </div>
+                                        </li>*@
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- /top navigation -->
+            <!-- page content -->
+            <div class="right_col" role="main">
+                @RenderBody()
+            </div>
+            <!-- /page content -->
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/Vendors/jquery/jquery.min.js"></script>
+    <script src="~/Vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Vendors/nprogress/nprogress.js"></script>
+
+    <script src="~/Vendors/Chart.js/dist/Chart.min.js"></script>
+    <!-- gauge.js -->
+    <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+
+    <script src="~/Vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+
+    <!-- Flot -->
+    <script src="~/Vendors/Flot/jquery.flot.js"></script>
+    <script src="~/Vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="~/Vendors/Flot/jquery.flot.time.js"></script>
+    <script src="~/Vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="~/Vendors/Flot/jquery.flot.resize.js"></script>
+
+    <!-- Flot plugins -->
+    <script src="~/Vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="~/Vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="~/Vendors/flot.curvedlines/curvedLines.js"></script>
+
+    <!-- DateJS -->
+    <script src="~/Vendors/DateJS/build/date.js"></script>
+
+    <script src="~/Vendors/moment/min/moment.min.js"></script>
+    <script src="~/Vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <script src="~/Content/Alela/js/custom.js"></script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+    <link rel="stylesheet" href="~/lib/cdn.css" />
+    <script src="~/Vendors/jquery/cdnstyle.js"></script>
+
+    <script src="~/Vendors/jquery/datablesStyle.js"></script>
+    <link rel="stylesheet" href="~/lib/cloudfire.css" />
+
+
+
+    @*<link rel="stylesheet" href="http://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" />
+        <script src="http://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>*@
+
+
+    @RenderSection("scripts", required: false)
+    @RenderSection("fecha", required: false)
+
+</body>
+</html>

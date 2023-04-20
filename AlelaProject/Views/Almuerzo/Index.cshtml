@@ -1,0 +1,301 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> Almuerzo = (List<SelectListItem>)ViewBag.Almuerzo;
+}
+@*Mostrar todos los permisos*@
+<div class="card shadow mb-4">
+    <div class="card-header py-3 col-md-12">
+        <div class="col-md-9 left">
+            <div class="col-xs-12">
+                <h6 class="font-weight-bold text-primary">Horario de almuerzo</h6>
+            </div>
+            <br />
+            <br />
+            <div class="col-xs-12 border">
+                <span class="font-weight-bold text-danger" style="font-size:15px;">Solo para reservar la hora de almuerzo.</span>
+            </div>
+            <br />
+            <br />
+            <div class="col-xs-12 border">
+                <span class="font-weight-bold text-success" style="font-size:12px;">Recuerde que el oforo máximo es de 7 personas, 2 personas en cada mesa grande y 1 persona en cada mesa pequeña</span>
+            </div>
+            <br />
+            <br />
+            <div class="col-xs-12 border">
+                <span style="font-size:15px;font-family:'Arial Rounded MT';font-weight:bold"> Selecciona la Fecha que desea buscar:</span>
+            </div>
+            <div class="col-xs-12">
+                <input type="date" id="FechaBusqueda" />
+                <button class="btn  btn-info" style="width:100px" onclick="functionBusqueda();">Buscar</button>
+            </div>
+        </div>
+        <div class="col-md-3" style="text-align:right">
+            <button class="btn btn-primary btn-sm right" data-target="#almuerzoModal" data-toggle="modal">Asignar Horario</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            @if (ViewBag.Datos != null)
+            {
+                <br />
+                <br />
+                <table id="tblProyecto" class="table" width="100%" style="font-family:'Trebuchet MS'">
+                    <thead>
+                        <tr>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Nombre Completo
+                            </td>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Fecha
+                            </td>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Hora Almuerzo
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Datos)
+                        {
+                            <tr>
+                                <td>
+                                    @item.NombreCompleto
+                                </td>
+                                <td>
+                                    @item.FechaReserva
+                                </td>
+                                <td>
+                                    @item.NombreHora
+                                </td>
+
+                                @*<td>
+                                        @if (item.NombreEstado == "Activo")
+                                        {
+                                            <a onclick="inactivarPermiso(@item.idPermiso)" data-toggle="tooltip" data-placement="top" title="" data-original-title="Activo">
+                                                <img src="~/img/on.png" width="35" height="35" />
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a onclick="inactivarPermiso(@item.idPermiso)" data-toggle="tooltip" data-placement="top" title="" data-original-title="Inactivo">
+                                                <img src="~/img/off.png" width="35" height="35" />
+                                            </a>
+                                        }
+                                    </td>*@
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+
+    @*modal para ingresar un horario de almuerzo*@
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="modal" id="almuerzoModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <span style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Asignación Hora de Almuerzo</span>
+                                    <button class="close" data-dismiss="modal">&times;</button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-group" asp-action="Index" id="formulario" style="font-family:'Arial Rounded MT';font-weight:bold;">
+                                        <div class="form-group">
+                                            <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Fecha Inicial:</label>
+                                            <input id="Fechar" name="Fecha" class="form-control" type="date" style="width:100%" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Seleccione Hora Almuerzo</label>
+                                            @Html.DropDownList("almuerzo", Almuerzo, "Hora Almuerzo", new { @class = "form-control" })
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-info" type="button" style="width:150px" onclick="functionConfirm();">Aceptar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Ingresar una reserva*@
+<script>
+    function functionConfirm(event) {
+
+        var Fecha = $("#Fechar").val();
+        var Almuerzo = document.getElementById('almuerzo').selectedOptions[0].value;
+        var HoraAlmuerzo = document.getElementById('almuerzo').selectedOptions[0].text;
+        var contador = 0;
+        /*buscamos el aforo maximo para el dia seleccinado*/
+
+        var array = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.HoraAlmuerzo>)ViewBag.almuerzoreservado).Select(Mapa => new
+            {
+                idHoraAlmuerzo = Mapa.idHoraAlmuerzo,
+                Fecha = Mapa.Fecha.ToString(),
+
+            })));
+
+
+        for (var i = 0; i < array.length; i += 1)
+        {
+            if (array[i].Fecha == Fecha && array[i].idHoraAlmuerzo == Almuerzo)
+            {
+              contador = contador + 1;
+            }
+        }
+
+
+
+        if (contador > 6) {
+            swal({
+                title: 'Error',
+                text: "Aforo maximo para la hora de almuerzo seleccionado.",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+
+            if (Fecha == "" || (HoraAlmuerzo == "") || Almuerzo == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea actualizar la información ?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    location.href = '@Url.Action("IndexPost", "Almuerzo")?Fecha=' + Fecha + '&almuerzo=' + Almuerzo + '&HoraAlmuerzo=' + HoraAlmuerzo;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        }
+
+        return false;
+    }
+</script>
+
+@*Filtro por fecha seleccionada*@
+<script type="text/javascript">
+    function functionBusqueda(event) {
+
+        var FechaBusqueda = $("#FechaBusqueda").val();
+
+        if (FechaBusqueda == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+
+            location.href = '@Url.Action("Index", "Almuerzo")?FechaBusqueda=' + FechaBusqueda;
+
+        }
+
+        return false;
+    }
+</script>
+
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblProyecto").DataTable({
+                language:
+                {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
+        });
+    </script>
+}

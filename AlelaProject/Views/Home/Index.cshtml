@@ -1,0 +1,91 @@
+﻿@{ ViewBag.Title = "Login"; }
+<link href="~/desingLogin/css/style.css" rel="stylesheet" />
+@if (!HttpContext.Current.User.Identity.IsAuthenticated)
+{
+<div>
+    <div class="center-container">
+        <!--header-->
+        <div class="header-w3l">
+            <h1>Reservas Espacios Corporativos Conhydra</h1>
+        </div>
+        <!--//header-->
+        <div class="main-content-agile">
+            <div class="sub-main-w3 border">
+                <br />
+                <br />
+                <div class="wthree-pro">
+                    <h2 class="badge bg-blue" style="color:white"> Iniciar Sesión </h2>
+                </div>
+                <form action="~/Home/IndexPost" method="post">
+                    <div>
+                        <div class="pom-agile">
+                            <input placeholder="Usuario" id="Beta" name="Beta" class="user" type="text" required="">
+                            @*<span class="icon1"><i class="fa fa-user" aria-hidden="true"></i></span>*@
+                        </div>
+                        <div class="pom-agile">
+                            <input placeholder="Contraseña" id="Cornelio" name="Cornelio" class="pass" type="password" required="">
+                            @*<span class="icon2"><i class="fa fa-unlock" aria-hidden="true"></i></span>*@
+                        </div>
+                        <div class="sub-w3l">
+                            <div class="right-w3l">
+                                <input type="submit" value="Iniciar Sesión">
+                            </div>
+                        </div>
+                        <br />
+                        <div class="alert-danger">
+                            @ViewBag.Error
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--//main-->
+        <!--footer-->
+        <div class="footer">
+            <p>&copy; 2021<a href="http://w3layouts.com" style="font-size:5px">W3</a></p>
+        </div>
+        <!--//footer-->
+    </div>
+</div> }
+else
+{
+<div class="col-md-12">
+    <a href='@Url.Action("Index", "MapaCompleto", new {}, null)' class="btn btn-primary">Regresar</a>
+</div>
+}
+<script type="text/javascript">
+    function functionConfirm(event) {
+
+        var NombreC = $("#User").val();
+        var ccosto = $("#pwd").val();
+
+        if (NombreC == "" || ccosto == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+
+          location.href = '@Url.Action("IndexPost", "Home")?Usuario=' + NombreC + '&Contrasena=' + ccosto;
+
+        }
+
+        return false;
+    }
+</script>

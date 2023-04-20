@@ -1,0 +1,2217 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> HoraInical = (List<SelectListItem>)ViewBag.DataH;
+    List<SelectListItem> Horaf = (List<SelectListItem>)ViewBag.DataF;
+    List<SelectListItem> Almuerzo = (List<SelectListItem>)ViewBag.Almuerzo;
+    List<SelectListItem> idAlmuerzo = (List<SelectListItem>)ViewBag.Almuerzo;
+
+}
+<link href="~/Otros/Diseno.css" rel="stylesheet" />
+
+<div class="col-md-12">
+    @*<a href='@Url.Action("Index", "TableroControl", new {}, null)' class="btn btn-primary">tabControl</a>*@
+</div>
+
+<div class="col-md-12 form-group border">
+    <div class="col-xs-12">
+        <span style="font-size:19px;font-family:'Arial Rounded MT';font-weight:bold"> Plano Nivel 1</span>
+    </div>
+    <div class="col-xs-12">
+        <span style="font-size:19px;font-family:'Arial Rounded MT';font-weight:bold"> Selecciona el puesto que desea reservar y llene los datos solicitados.</span>
+    </div>
+    <br />
+</div>
+
+<div class="col-md-12 form-group border">
+    <div class="col-xs-12">
+        <span style="font-size:19px;font-family:'Arial Rounded MT';font-weight:bold"> Selecciona la Fecha que desea buscar:</span>
+    </div>
+    <div class="col-xs-12">
+        <input type="date" id="FechaBusqueda" />
+        <button class="btn  btn-info" onclick="functionBusqueda();">Buscar</button>
+    </div>
+</div>
+
+<div class="col-md-12 form-group border">
+    <div class="col-xs-12">
+        <span style="font-size:11px;font-family:'Arial Rounded MT';font-weight:bold"><span style="color:red;font-size:12px;font-weight:bold"> RSV: </span> <span class="badge bg-warning pull-center" style="font-size: 12px;">RESERVADO</span></span>
+    </div>
+    <br />
+</div>
+
+<div class="col-md-12 form-group border">
+    <div class="col-xs-12">
+        <span style="font-size:11px;font-family:'Arial Rounded MT';font-weight:bold">Cuando se filtra por fecha los puestos que aparecen en rojo son los que tienen o tuvieron reserva para ese día seleccionado. <span style="font-size:16px;">La fecha consultada es:</span> <span style="color:black;font-size:16px;" class="badge bg-blue-sky pull-center">@ViewBag.FechaConsulta</span></span>
+    </div>
+    <br />
+</div>
+
+<div class="col-md-12 form-group fondo">
+
+    <div class="loader"></div>
+
+    <!-- #region SISTEMAS -->
+
+    @if (ViewBag.ReservaActual == "Si")
+    {
+        // si la reserva es igual al usuario poner en color MORADO
+        if (ViewBag.nombreReserva1209 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCedwinNatalia" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1209');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.PSistemasCom">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/PUESTO EDWIN.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCedwinNatalia" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1209');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.PSistemasCom">
+                        <span class="texto badge bg-red">RSV<img src="~/img/PUESTO EDWIN.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCedwinNatalia" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1209');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.PSistemasCom">
+                    <span class="texto badge bg-blue">1<img src="~/img/PUESTO EDWIN.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+
+    }
+
+    <div style="visibility:hidden">
+        @if (ViewBag.ReservaActualOscar == "Si")
+        {
+            if (ViewBag.nombreReserva1210 == ViewBag.NombreCompleto)
+            {
+                <div class="ubicacionPCOscar" id="items">
+                    <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1210');">
+                        <div data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                            <i class="fa fa-desktop" style="color: #2aff00; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.PuestoOscar">
+                                <span class="texto badge bg-purple">AQUÍ<img src="~/img/SISTEMAS1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="ubicacionPCOscar" id="items">
+                    <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1210');">
+                        <div data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                            <i class="fa fa-desktop" style="color: red; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.PuestoOscar">
+                                <span class="texto badge bg-red">RSV<img src="~/img/SISTEMAS1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                            </i>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <div class="ubicacionPCOscar" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1210');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: blue; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.PuestoOscar">
+                        <span class="texto badge bg-blue">2<img src="~/img/SISTEMAS1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- #endregion -->
+    <!-- #region GESCOMER -->
+    @*gescomer*@
+    @if (ViewBag.reservagescomer1 == "Si")
+    {
+        if (ViewBag.nombreReserva1190 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCgescomer1" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1190');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer1">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/G1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCgescomer1" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1190');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer1">
+                        <span class="texto badge bg-red">RSV<img src="~/img/G1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCgescomer1" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1190');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer1">
+                    <span class="texto badge bg-blue">3<img src="~/img/G1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservagescomer2 == "Si")
+    {
+        if (ViewBag.nombreReserva1191 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCgescomer2" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1191');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer2">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/G2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCgescomer2" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1191');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer2">
+                        <span class="texto badge bg-red">RSV<img src="~/img/G2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCgescomer2" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1191');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer2">
+                    <span class="texto badge bg-blue">4<img src="~/img/G2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservagescomer3 == "Si")
+    {
+        if (ViewBag.nombreReserva1192 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCgescomer3" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1192');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer3">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/G3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCgescomer3" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1192');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer3">
+                        <span class="texto badge bg-red">RSV<img src="~/img/G3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCgescomer3" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1192');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer3">
+                    <span class="texto badge bg-blue">5<img src="~/img/G3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.ReservaActualOscar == "Si")
+    {
+        if (ViewBag.nombreReserva1192 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCgescomer4" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1192');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer3">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/G4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCgescomer4" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1192');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer3">
+                        <span class="texto badge bg-red">RSV<img src="~/img/G4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCgescomer4" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1192');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer3">
+                    <span class="texto badge bg-blue">6<img src="~/img/G4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+
+
+    @if (ViewBag.reservagescomer4 == "Si")
+    {
+        if (ViewBag.nombreReserva1193 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCgescomer5" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1193');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer4">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/G5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCgescomer5" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1193');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer4">
+                        <span class="texto badge bg-red">RSV<img src="~/img/G5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCgescomer5" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1193');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer4">
+                    <span class="texto badge bg-blue">7<img src="~/img/G5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservagescomer5 == "Si")
+    {
+        if (ViewBag.nombreReserva1194 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCgescomer6" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1194');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer5">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/G6.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCgescomer6" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1194');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer5">
+                        <span class="texto badge bg-red">RSV<img src="~/img/G6.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCgescomer6" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1194');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer5">
+                    <span class="texto badge bg-blue">8<img src="~/img/G6.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservagescomer6 == "Si")
+    {
+        if (ViewBag.nombreReserva1195 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCgescomer7" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1195');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer6">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/G7.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCgescomer7" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1195');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer6">
+                        <span class="texto badge bg-red">RSV<img src="~/img/G7.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCgescomer7" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1195');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer6">
+                    <span class="texto badge bg-blue">9<img src="~/img/G7.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservagescomer5 == "Si")
+    {
+        if (ViewBag.nombreReserva1195 == ViewBag.NombreCompleto)
+        {
+            <div class="ubicacionPCgescomer8" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1195');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer6">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/G8.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ubicacionPCgescomer8" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1195');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer6">
+                        <span class="texto badge bg-red">RSV<img src="~/img/G8.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="ubicacionPCgescomer8" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1195');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.gescomer6">
+                    <span class="texto badge bg-blue">10<img src="~/img/G8.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+
+    <!-- #endregion -->
+    <!-- #region CONTABILIDAD -->
+    @*CONTABILIDAD*@
+    @if (ViewBag.reservacontabilidad1 == "Si")
+    {
+        if (ViewBag.nombreReserva1205 == ViewBag.NombreCompleto)
+        {
+            <div class="contabilidad1" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1205');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad1">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CT1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad1" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1205');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad1">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CT1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="contabilidad1" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1205');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad1">
+                    <span class="texto badge bg-green">11<img src="~/img/CT1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacontabilidad2 == "Si")
+    {
+        if (ViewBag.nombreReserva1206 == ViewBag.NombreCompleto)
+        {
+            <div class="contabilidad2" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1206');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad2">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CT2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad2" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1206');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad2">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CT2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="contabilidad2" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1206');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad2">
+                    <span class="texto badge bg-green">12<img src="~/img/CT2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacontabilidad3 == "Si")
+    {
+        if (ViewBag.nombreReserva1207 == ViewBag.NombreCompleto)
+        {
+            <div class="contabilidad3" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1207');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad3">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CT3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad3" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1207');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad3">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CT3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="contabilidad3" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1207');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad3">
+                    <span class="texto badge bg-green">13<img src="~/img/CT3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacontabilidad4 == "Si")
+    {
+        if (ViewBag.nombreReserva1208 == ViewBag.NombreCompleto)
+        {
+            <div class="contabilidad4" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1208');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad4">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CT4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad4" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1208');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad4">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CT4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="contabilidad4" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1208');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad4">
+                    <span class="texto badge bg-green">14<img src="~/img/CT4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacontabilidad5 == "Si")
+    {
+        if (ViewBag.nombreReserva1211 == ViewBag.NombreCompleto)
+        {
+            <div class="contabilidad5" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1211');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad5">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CT5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad5" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1211');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad5">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CT5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="contabilidad5" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1211');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad5">
+                    <span class="texto badge bg-blue">15<img src="~/img/CT5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacontabilidad6 == "Si")
+    {
+        if (ViewBag.nombreReserva1212 == ViewBag.NombreCompleto)
+        {
+            <div class="contabilidad6" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1212');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad6">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CT6.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad6" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1212');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad6">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CT6.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="contabilidad6" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1212');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad6">
+                    <span class="texto badge bg-green">16<img src="~/img/CT6.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacontabilidad7 == "Si")
+    {
+        if (ViewBag.nombreReserva1213 == ViewBag.NombreCompleto)
+        {
+            <div class="contabilidad7" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1213');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad7">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CT7.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad7" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1213');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad7">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CT7.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="contabilidad7" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1213');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad7">
+                    <span class="texto badge bg-green">17<img src="~/img/CT7.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacontabilidad8 == "Si")
+    {
+        if (ViewBag.nombreReserva1214 == ViewBag.NombreCompleto)
+        {
+            <div class="contabilidad8" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1214');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad8">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CT8.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad8" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1214');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad8">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CT8.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="contabilidad8" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1214');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.contabilidad8">
+                    <span class="texto badge bg-blue">18<img src="~/img/CT8.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+
+    <!-- #endregion -->
+    <!-- #region COMPRAS -->
+    @*Compras*@
+    @if (ViewBag.reservacompra0 == "Si")
+    {
+        if (ViewBag.nombreReserva1200 == ViewBag.NombreCompleto)
+        {
+            <div class="compras0" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1200');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra0">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CP1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compras0" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1200');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra0">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CP1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="compras0" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1200');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra0">
+                    <span class="texto badge bg-green">19<img src="~/img/CP1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacompra1 == "Si")
+    {
+        if (ViewBag.nombreReserva1201 == ViewBag.NombreCompleto)
+        {
+            <div class="compras1" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1201');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra1">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CP2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compras1" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1201');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra1">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CP2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="compras1" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1201');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra1">
+                    <span class="texto badge bg-blue">20<img src="~/img/CP2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacompra2 == "Si")
+    {
+        if (ViewBag.nombreReserva1202 == ViewBag.NombreCompleto)
+        {
+            <div class="compras2" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1202');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra2">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CP3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compras2" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1202');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra2">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CP3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="compras2" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1202');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green|;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra2">
+                    <span class="texto badge bg-green">33<img src="~/img/CP3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacompra3 == "Si")
+    {
+        if (ViewBag.nombreReserva1203 == ViewBag.NombreCompleto)
+        {
+            <div class="compras3" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1203');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra3">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CP4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compras3" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1203');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra3">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CP4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="compras3" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1203');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra3">
+                    <span class="texto badge bg-green">22<img src="~/img/CP4.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacompra4 == "Si")
+    {
+        if (ViewBag.nombreReserva1204 == ViewBag.NombreCompleto)
+        {
+            <div class="compras4" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1204');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra4">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CP5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compras4" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1204');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra4">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CP5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="compras4" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1204');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra4">
+                    <span class="texto badge bg-blue">23<img src="~/img/CP5.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacompra5 == "Si")
+    {
+        if (ViewBag.nombreReserva1225 == ViewBag.NombreCompleto)
+        {
+            <div class="compras5" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1225');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra5">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/PUESTO34.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compras5" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1225');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra5">
+                        <span class="texto badge bg-red">RSV<img src="~/img/PUESTO34.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="compras5" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1225');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.compra5">
+                    <span class="texto badge bg-green">34<img src="~/img/PUESTO34.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    <!-- #endregion -->
+    <!-- #region COMERCIAL -->
+    @*COMERCIAL*@
+    @if (ViewBag.reservacomercial1 == "Si")
+    {
+        if (ViewBag.nombreReserva1196 == ViewBag.NombreCompleto)
+        {
+            <div class="comercial1" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1196');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial1">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CM1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comercial1" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1196');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial1">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CM1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="comercial1" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1196');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial1">
+                    <span class="texto badge bg-blue">24<img src="~/img/CM1.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacomercial2 == "Si")
+    {
+        if (ViewBag.nombreReserva1197 == ViewBag.NombreCompleto)
+        {
+            <div class="comercial2" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1197');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial2">
+                        <span class="texto badge bg-purple">AQUI<img src="~/img/CM2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comercial2" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1197');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial2">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CM2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="comercial2" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1197');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial2">
+                    <span class="texto badge bg-blue">25<img src="~/img/CM2.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacomercial3 == "Si")
+    {
+        if (ViewBag.nombreReserva1198 == ViewBag.NombreCompleto)
+        {
+            <div class="comercial3" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1198');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial3">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CM3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comercial3" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1198');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial3">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CM3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="comercial3" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1198');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: green;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial3">
+                    <span class="texto badge bg-green">26<img src="~/img/CM3.jpeg" style="width:250px; height:250px;" alt="careto tooltip" /></span>
+
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservacomercial4 == "Si")
+    {
+        if (ViewBag.nombreReserva1199 == ViewBag.NombreCompleto)
+        {
+            <div class="comercial4" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1199');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial4">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/CM4.jpeg" style="width:250px; height:250px;" alt="" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comercial4" id="items">
+                <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1199');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial4">
+                        <span class="texto badge bg-red">RSV<img src="~/img/CM4.jpeg" style="width:250px; height:250px;" alt="" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="comercial4" id="items">
+            <div class="col-sm-2 col-6 text-center" onclick="mostrarResumen('1199');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.comercial4">
+                    <span class="texto badge bg-blue">27<img src="~/img/CM4.jpeg" style="width:250px; height:250px;" alt="" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+
+    <!-- #endregion -->
+    <!-- #region Salas de juntas -->
+    @if (ViewBag.Reservasalajunta1 == "Si")
+    {
+        <div class="Salajuanta1">
+            <div class="" onclick="mostrarResumen('1221');" style="color:red;font-weight:bold"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.salajunta1">
+                <img src="~/img/reunion.png" width="130" height="100" />
+                <span class="texto badge bg-red">Reservada Capacidad 7 Personas<img src="~/img/salajunta1.jpeg" style="width:250px; height:250px;" alt="" /></span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="Salajuanta1">
+            <div class="" onclick="mostrarResumen('1221');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.salajunta1">
+                <img src="~/img/reunion.png" width="130" height="100" />
+                <span class="texto badge bg-blue">Disponible Capacidad 7 Personas<img src="~/img/salajunta1.jpeg" style="width:250px; height:250px;" alt="" /></span>
+            </div>
+        </div>
+    }
+    <!-- #endregion -->
+    <!-- #region Auditorio -->
+    @if (ViewBag.Reservaauditorio == "Si")
+    {
+        <div class="Auditorio">
+            <div class="" onclick="mostrarResumen('1222');" style="color:red;font-weight:bold"
+                 data-toggle="tooltip" data-placement="top" title="" data-original-title="@ViewBag.Auditorio">
+                <img src="~/img/Auditory.png" width="100" height="80" />
+                <span class="texto badge bg-red">Reservado<img src="~/img/SalaCON1.jpg" style="width:250px; height:250px;" alt="" /></span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="Auditorio">
+            <div class="" onclick="mostrarResumen('1222');"
+                 data-toggle="tooltip" data-placement="top" title="" data-original-title="@ViewBag.Auditorio">
+                <img src="~/img/Auditory.png" width="100" height="80" />
+                <span class="texto badge bg-blue">Disponible<img src="~/img/SalaCON1.jpg" style="width:250px; height:250px;" alt="" /></span>
+            </div>
+        </div>
+    }
+    <!-- #endregion -->
+
+</div>
+
+@*Modal resumen Equipos*@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="resumenModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-content">
+                            <div class="modal-header bg-green white">
+                                <h4 class="center">Resumen</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+
+                                    <label id="modal_idd" class="badge bg-red" style="font-weight:bold;font-family:'Arial Rounded MT';color:white;visibility:visible"></label>
+
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Nombre Puesto / Código:</label>
+                                        <h6 id="modal_nombre" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Complementos:</label>
+                                        <h6 id="modal_complemento" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                        @*<img src="~/img/SISTEMAS1.jpeg" width="220" height="160" />*@
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Tipo:</label>
+                                        <h6 id="modal_tipo" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Area:</label>
+                                        <h6 id="modal_area" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <hr />
+                                    <div class="center">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Reservar:</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Fecha:</label>
+                                        <input id="Fechar" name="Fecha" class="form-control" type="date" style="width:100%" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Entrada:</label>
+                                        @Html.DropDownList("HoraInicior", HoraInical, "Selecciona Hora Inicial", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Salida:</label>
+                                        @Html.DropDownList("Horafr", Horaf, "Selecciona Hora Salida", new { @class = "form-control" })
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Almuerzo:</label>
+                                        @Html.DropDownList("Almuerzo", Almuerzo, "Selecciona Hora Almuerzo", new { @class = "form-control" })
+                                    </div>
+                                    <hr />
+                                    <div style="text-align:center">
+                                        <button class="btn bg-blue" type="button" style="width:130px" onclick="functionreservarid();">Aceptar</button>  <a class="btn  bg-warning" style="width:180px;color:white;cursor:pointer" onclick="mostrarHorario();">Establecer Horario</a>   <a class="btn  bg-green" style="width: 130px; color: white; cursor: pointer" onclick="mostrarReservas();">Ver Reservas</a>
+                                    </div>
+                                </form>
+                            </div>
+                            @*<div class="modal-footer">
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*Modal resumen Auditorios*@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="resumenModalAuditorio" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-content">
+                            <div class="modal-header bg-blue white">
+                                <h4 class="center">Resumen</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+
+                                    <label id="modal_id2" style="font-weight:bold;font-family:'Arial Rounded MT';color:black;visibility:visible"></label>
+
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Nombre Puesto / Código:</label>
+                                        <h6 id="modal_nombre2" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Complementos:</label>
+                                        <h6 id="modal_complemento2" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                        @*<img src="~/img/SISTEMAS1.jpeg" width="220" height="160" />*@
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Tipo:</label>
+                                        <h6 id="modal_tipo2" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Area:</label>
+                                        <h6 id="modal_area2" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <hr />
+                                    <div class="center">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Reservar:</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Fecha:</label>
+                                        <input id="Fechar2" name="Fecha" class="form-control" type="date" style="width:100%" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Entrada:</label>
+                                        @Html.DropDownList("HoraInicior2", HoraInical, "Selecciona Hora Inicial", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Salida:</label>
+                                        @Html.DropDownList("Horafr2", Horaf, "Selecciona Hora Salida", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Observaciones:</label>
+                                        <input id="observaciones" name="observaciones" class="form-control" type="text" maxlength="150" style="width:100%" />
+                                    </div>
+                                    <hr />
+                                    <div style="text-align:center">
+                                        <button class="btn bg-blue" type="button" style="width:130px" onclick="functionreservarid();">Aceptar</button>  <a class="btn  bg-warning" style="width:180px;color:white;cursor:pointer" onclick="mostrarHorario();">Establecer Horario</a>   <a class="btn  bg-green" style="width: 130px; color: white; cursor: pointer" onclick="mostrarReservas();">Ver Reservas</a>
+                                    </div>
+                                </form>
+                            </div>
+                            @*<div class="modal-footer">
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*ModalResumen*@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="reservasModal" tabindex="-1">
+                <div class="modal-dialog2">
+                    <div class="modal-content">
+                        <div class="modal-content" style="overflow:scroll;height:600px">
+                            <div class="modal-header bg-blue white center">
+                                <h4>Reservas</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+                                    <div class="center">
+                                        <label id="red" style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Proxima Reserva</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Por:</label>
+                                        <h6 id="modal_nombrec" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Fecha:</label>
+                                        <h6 id="modal_fecha" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Desde:</label>
+                                        <h6 id="modal_horai" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Hasta:</label>
+                                        <h6 id="modal_horaf" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <hr />
+                                    <div style="text-align:center">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:white
+    " class="badge bg-info">Otras Reserva</label>
+                                    </div>
+                                    <table id="tblProyecto9" class="table" width="100%">
+                                        <thead>
+                                            <tr style="text-align:center">
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Fecha
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Inicio
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Fin
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Nombre Completo
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Estatus
+                                                </th>
+                                                <th style="text-transform:capitalize;font-weight:bold;font-size:16px;color:blue">
+                                                    Almuerzo
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Observaciones
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="datosPlano1"></tbody>
+
+                                    </table>
+                                </form>
+                            </div>
+                            @*<div class="modal-footer">
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*ModalHorario*@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="horarioModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-content" style="overflow:scroll;height:630px">
+                            <div class="modal-header bg-blue white">
+                                <h4 class="center">Establecer Horario</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+                                    <div class="center">
+                                        <label id="red" style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#BBB">Asignación de horario</label>
+                                    </div>
+                                    <span id="modal_idh" style="font-weight:bold;font-family:'Arial Rounded MT';color:black;visibility:visible"></span>
+                                    <br />
+                                    <div class="row col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group col-md-12">
+                                                <label>Fecha Inicial<span style="color:red"><b> *</b></span></label>
+                                                <input id="fechainicial" name="Nombre" class="form-control" type="date" style="width:260px" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group col-md-12">
+                                                <label>Fecha Final<span style="color:red"><b> *</b></span></label>
+                                                <input id="fechafin" name="fechafin" class="form-control" type="date" style="width:260px" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row col-md-12">
+                                        <div class="form-group col-md-6">
+                                            <label>Seleccione Hora Inicio<span style="color:red"><b> *</b></span></label>
+                                            @Html.DropDownList("horainicio", HoraInical, "Selecciona Hora Inicio", new { @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Seleccione Hora Finalización<span style="color:red"><b> *</b></span></label>
+                                            @Html.DropDownList("horafin", Horaf, "Selecciona Hora Finalización", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="row col-md-12 form-group">
+                                        <span style="font-family:'Arial Rounded MT';color:red">Recuerda que el aforo máximo en el tiempo de almuerzo es de 7 personas(1 persona mesa pequeña, 2 personas mesa grande).</span>
+                                        <br />
+                                        <br />
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Almuerzo:</label>
+                                        @Html.DropDownList("idalmuerzo", idAlmuerzo, "Selecciona Hora Almuerzo", new { @class = "form-control" })
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="row col-md-12 form-group">
+                                        <div class="col-md-6">
+                                            <span style="color:red"><b> *</b></span><label>Seleccione los dias del Horario:<span style="color:red"><b> *</b></span></label>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row col-md-12">
+                                        <br />
+                                        <div class="col-md-6">
+                                            @if (ViewBag.Dias != null)
+                                            {
+                                                foreach (var item in ViewBag.Dias)
+                                                {
+                                                    <table><tr id="itemNov"><td><input type="checkbox" id="@item.NombreDia" checked="@item.Seleccioando" /><span style="font-size:15px;font-weight:bold; color:black">    @item.NombreDia</span></td></tr></table>
+                                                }
+                                            }
+                                        </div>
+                                        <br />
+                                        <br />
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="row col-md-12 form-group">
+                                        <span style="color:red"><b> *</b></span><label>Recuerde: que la hora de incio debe ser inferior a la hora de finalización<span style="color:red"><b> *</b></span></label>
+                                    </div>
+                                    <div class="modal-footer center">
+                                        <button class="btn bg-blue" type="button" style="width:150px" onclick="establecerHorario();">Aceptar</button>
+                                    </div>
+                                </form>
+                            </div>
+                            @*<div class="modal-footer">
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*Hoja de estilos*@
+<style>
+    .texto > em, .texto > img {
+        display: none;
+    }
+
+    .texto:hover > em, .texto:hover > img {
+        display: block;
+    }
+
+    .texto {
+        position: relative;
+        font-size: 10px;
+        font-family: 'Arial Rounded MT';
+        text-align: center;
+        align-content: center;
+    }
+
+    .texto > em, .texto > img {
+            display: none;
+            position: absolute;
+            top: -1em;
+            left: 2em;
+            /* Un poco de colorido */
+            background: white;
+            border: 1px solid black;
+            width: 700px;
+            height: 400px;
+            align-content: center;
+            text-align: center;
+        }
+
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../../img/cargando.gif') 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+    /*#region Sistemas */
+
+    .ubicacionPCedwinNatalia {
+        position: absolute;
+        width: 0px;
+        top: 16.5%;
+        left: 64.5%;
+        visibility:hidden;
+    }
+
+    .ubicacionPCOscar {
+        position: absolute;
+        width: 0px;
+        top: 11.5%;
+        left: 57.5%;
+        visibility: hidden;
+    }
+
+    .Salajuanta1 {
+        position: absolute;
+        width: 180px;
+        height: 130px;
+        top: 9.5%;
+        left: 74.5%;
+        background-color: transparent;
+        visibility: hidden;
+    }
+
+    .Auditorio {
+        position: absolute;
+        width: 90px;
+        height: 70px;
+        top: 66%;
+        left: 41%;
+        background-color: transparent;
+    }
+    /*#endregion */
+
+    /*#region GESCOMER */
+    .ubicacionPCgescomer1 {
+        position: absolute;
+        width: 0px;
+        top: 17%;
+        left: 46.1%;
+        visibility: hidden;
+    }
+
+    .ubicacionPCgescomer2 {
+        position: absolute;
+        width: 0px;
+        top: 17%;
+        left: 42.7%;
+        visibility: hidden;
+    }
+
+    .ubicacionPCgescomer3 {
+        position: absolute;
+        width: 0px;
+        top: 17%;
+        left: 38.5%;
+        visibility: hidden;
+    }
+
+    .ubicacionPCgescomer4 {
+        position: absolute;
+        width: 0px;
+        top: 19%;
+        left: 34.5%;
+        visibility: hidden;
+    }
+
+    .ubicacionPCgescomer5 {
+        position: absolute;
+        width: 0px;
+        top: 13.5%;
+        visibility: hidden;
+        left: 47%;
+    }
+
+    .ubicacionPCgescomer6 {
+        position: absolute;
+        width: 0px;
+        top: 13.8%;
+        left: 42.5%;
+        visibility: hidden;
+    }
+
+    .ubicacionPCgescomer7 {
+        position: absolute;
+        width: 0px;
+        top: 13.8%;
+        left: 37.5%;
+        visibility: hidden;
+    }
+
+    .ubicacionPCgescomer8 {
+        position: absolute;
+        width: 0px;
+        top: 14.5%;
+        left: 33.9%;
+        visibility: hidden;
+    }
+
+    /*#endregion */
+
+    /*#region contabilidad */
+
+    /*CONTABILIDAD*/
+    .contabilidad1 {
+        position: absolute;
+        width: 0px;
+        top: 15%;
+        left: 5.5%;
+        
+    }
+
+    .contabilidad2 {
+        position: absolute;
+        width: 0px;
+        top: 15%;
+        left: 10.2%;
+
+    }
+
+    .contabilidad3 {
+        position: absolute;
+        width: 0px;
+        top: 19.6%;
+        left:6.2%;
+    }
+
+    .contabilidad4 {
+        position: absolute;
+        width: 0px;
+        top: 16.9%;
+        left: 16.2%;
+    }
+
+    .contabilidad5 {
+        position: absolute;
+        width: 0px;
+        top: 17.6%;
+        left: 23.2%;
+        visibility:hidden;
+    }
+
+    .contabilidad6 {
+        position: absolute;
+        width: 0px;
+        top: 21.5%;
+        left: 21%;
+    }
+
+    .contabilidad7 {
+        position: absolute;
+        width: 0px;
+        top: 17%;
+        left: 20.5%;
+
+    }
+
+    .contabilidad8 {
+        position: absolute;
+        width: 0px;
+        top: 13.8%;
+        left: 23%;
+        visibility:hidden;
+    }
+
+    /*#endregion */
+
+    /*#region COMPRAS */
+
+    /*Compras*/
+    .compras0 {
+        position: absolute;
+        width: 0px;
+        top: 60%;
+        left: 10.5%;
+    }
+
+    .compras1 {
+        position: absolute;
+        width: 0px;
+        top: 60%;
+        left: 10.5%;
+        visibility:hidden;
+    }
+
+    .compras2 {
+        position: absolute;
+        width: 0px;
+        top: 61.5%;
+        left: 23.5%;
+    }
+
+    .compras3 {
+        position: absolute;
+        width: 0px;
+        top: 49%;
+        left: 6%;
+
+    }
+
+    .compras4 {
+        position: absolute;
+        width: 0px;
+        top: 39.8%;
+        left: 11%;
+        visibility:hidden;
+    }
+
+    .compras5 {
+        position: absolute;
+        width: 0px;
+        top: 67.5%;
+        left: 23.5%;
+
+    }
+
+    /*#endregion */
+
+    /*#region Comercial */
+
+    /*Comercial*/
+    .comercial1 {
+        position: absolute;
+        width: 0px;
+        top: 35.6%;
+        left: 50.5%;
+        visibility:hidden;
+    }
+
+    .comercial2 {
+        position: absolute;
+        width: 0px;
+        top: 35.6%;
+        left: 55.5%;
+        visibility: hidden;
+    }
+
+    .comercial3 {
+        position: absolute;
+        width: 0px;
+        top: 48%;
+        left: 49.7%;
+
+    }
+
+    .comercial4 {
+        position: absolute;
+        width: 0px;
+        top: 46.6%;
+        left: 48%;
+        visibility: hidden;
+    }
+
+    /*#endregion */
+
+</style>
+
+@*Mostrar Resumen Modal*@
+<script type="text/javascript">
+    function mostrarResumen(codigo) {
+
+        var v  = '@ViewBag.DatosMapa';
+
+            var array = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.Mapa>)ViewBag.DatosMapa).Select(Mapa => new
+            {
+                idObjeto = Mapa.idObjeto,
+                Nombre = Mapa.Nombre,
+                Codigo = Mapa.Codigo,
+                NombreArea = Mapa.NombreArea,
+                TipoObjeto = Mapa.TipoObjeto,
+                idArea = Mapa.idArea,
+                NombreComplemento = Mapa.NombreComplemento,
+            }) ) );
+            for (var i = 0; i < array.length; i += 1) {
+
+                if (array[i].idObjeto == codigo) {
+                    $("#modal_idd").html(array[i].idObjeto);
+                    $("#modal_id2").html(array[i].idObjeto);
+                    $("#modal_idh").html(array[i].idObjeto);
+                    $("#modal_cod").html(array[i].Codigo);
+                    $("#modal_cod2").html(array[i].Codigo);
+                    $("#modal_nombre").html(array[i].Nombre + ' / ' + array[i].Codigo)
+                    $("#modal_nombre2").html(array[i].Nombre + ' / ' + array[i].Codigo);
+                    $("#modal_tipo").html(array[i].TipoObjeto);
+                    $("#modal_tipo2").html(array[i].TipoObjeto);
+                    $("#modal_area").html(array[i].NombreArea);
+                    $("#modal_area2").html(array[i].NombreArea);
+                }
+            }
+
+        var arrayComple = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.ObjetosComplementos>)ViewBag.DatosMapaCompl).Select(Mapa => new
+            {
+                idObjeto = Mapa.idObjeto,
+                Complementos = Mapa.Complementos
+            })));
+
+            for (var i = 0; i < arrayComple.length; i += 1) {
+
+                if (arrayComple[i].idObjeto == codigo) {
+                    $("#modal_complemento").html(arrayComple[i].Complementos);
+                    $("#modal_complemento2").html(arrayComple[i].Complementos);
+                }
+            }
+
+            var arrayReser = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.ConsultaReserva>)ViewBag.DatosReservas).Select(Mapa => new
+            {
+                Fecha = Mapa.Fecha,
+                idObjeto = Mapa.idObjeto,
+                HoraInicio = Mapa.HoraInicio,
+                HoraFin = Mapa.HoraFin,
+                NombreCompleto = Mapa.NombreCompleto,
+                FechaReserva = Mapa.FechaReserva,
+                Disponible = Mapa.Disponible,
+                NombreHora = Mapa.NombreHora,
+                observaciones = Mapa.Observaciones,
+                nombredia = Mapa.NombreDia,
+            })));
+
+            var ingreso = '1';
+            $("#modal_nombrec").html('');
+            $("#modal_fecha").html('');
+            $("#modal_horai").html('');
+            $("#modal_horaf").html('');
+            document.getElementById("datosPlano1").innerHTML = "";
+
+            for (var i = 0; i < arrayReser.length; i += 1) {
+
+                if (arrayReser[i].idObjeto == codigo) {
+                    if (arrayReser[i].Disponible == "Pendiente" || arrayReser[i].Disponible == "Hoy") {
+
+                        if (ingreso == '1') {
+                            $("#modal_nombrec").html(arrayReser[i].NombreCompleto);
+                            $("#modal_fecha").html(arrayReser[i].FechaReserva);
+                            $("#modal_horai").html(arrayReser[i].HoraInicio);
+                            $("#modal_horaf").html(arrayReser[i].HoraFin);
+                            ingreso = '0';
+                        }
+
+                        $("#datosPlano1").append(
+                            "<tr style='text-align:center'><td style='font-weight:bold'>"
+                            + arrayReser[i].FechaReserva + "-" + "<span class='badge bg-warning'>" + arrayReser[i].nombredia + "</span></td><td>"
+                            + arrayReser[i].HoraInicio + "</td><td>"
+                            + arrayReser[i].HoraFin + "</td>" +
+                            "<td>" + arrayReser[i].NombreCompleto + "</td><td>"
+                            + arrayReser[i].Disponible + "</td><td>"
+                            + arrayReser[i].NombreHora + "</td><td>"
+                            + arrayReser[i].observaciones + "</td></tr>"
+                        );
+                    //    otras = otras + arrayReser[i].FechaReserva + ' ' + arrayReser[i].HoraInicio + ' ' + arrayReser[i].HoraFin + ' ' + arrayReser[i].NombreCompleto + ' - ' + arrayReser[i].Disponible + ' - Hora Almuerzo:' + arrayReser[i].NombreHora + ' - '+ arrayReser[i].observaciones + '<br/>';
+                    }
+                }
+            }
+
+        if (codigo == "1221" || codigo == "1222") {
+            $('#resumenModalAuditorio').modal('show');
+        }
+        else {
+            $('#resumenModal').modal('show');
+        }
+
+
+    }
+</script>
+
+@*Ocultar y mostrar modales*@
+<script type="text/javascript">
+    function mostrarReservas() {
+
+        $('#reservasModal').modal('show');
+        $('#resumenModal').modal('hide');
+    }
+</script>
+
+@*Ocultar y mostrar modales*@
+<script type="text/javascript">
+    function mostrarHorario() {
+
+        $('#horarioModal').modal('show');
+        $('#resumenModal').modal('hide');
+    }
+</script>
+
+@*Ingresar una reserva*@
+<script>
+    function functionreservarid(event) {
+        var user = '@ViewBag.IdUser';
+        var email = '@ViewBag.CorreoElectronico';
+        var Fecha = $("#Fechar").val();
+        var HoraInicio = document.getElementById('HoraInicior').selectedOptions[0].value;
+        var HoraFin = document.getElementById('Horafr').selectedOptions[0].value;
+
+        var Fecha2 = $("#Fechar2").val();
+        var HoraInicio2 = document.getElementById('HoraInicior2').selectedOptions[0].value;
+        var HoraFin2 = document.getElementById('Horafr2').selectedOptions[0].value;
+
+        var idObjetod = $("#modal_id").text();
+        var idObjetod2 = $("#modal_id2").text();
+
+        var Almuerzo = document.getElementById('Almuerzo').selectedOptions[0].value;
+        var observaciones = $("#observaciones").val();
+        var contador = 0;
+        var nombrepuesto = $("#modal_nombre").text();
+
+        if (idObjetod == "") {
+
+            idObjetod = idObjetod2;
+        }
+
+        if (observaciones == "") {
+            observaciones = "";
+        }
+
+        if (Fecha == "") {
+
+            Fecha = Fecha2;
+        }
+        if (HoraInicio == "") {
+
+            HoraInicio = HoraInicio2;
+        }
+        if (HoraFin == "") {
+
+            HoraFin = HoraFin2;
+        }
+
+
+
+        /*buscamos el aforo maximo para el dia seleccinado*/
+
+        var array = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.HoraAlmuerzo>)ViewBag.almuerzoreservado).Select(Mapa => new
+            {
+                idHoraAlmuerzo = Mapa.idHoraAlmuerzo,
+                Fecha = Mapa.Fecha.ToString(),
+            }) ) );
+
+        for (var i = 0; i < array.length; i += 1)
+        {
+
+            if (array[i].Fecha == Fecha && array[i].idHoraAlmuerzo == Almuerzo)
+            {
+              contador = contador + 1;
+            }
+        }
+
+        if (idObjetod == "1221" || idObjetod == "1222") {
+
+            Almuerzo = "1002";
+        }
+
+        if (contador > 6) {
+            swal({
+                title: 'Error',
+                text: "Aforo maximo para la hora de almuerzo seleccionado.",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+
+            if (Fecha == "" || (idObjetod == "") || HoraInicio == "" || HoraFin == "" || Almuerzo == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+            else {
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea reservar para el  " + Fecha +" ?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    location.href = '@Url.Action("IndexPost", "MapaCompleto")?idObjeto=' + idObjetod + '&Fecha=' + Fecha + '&HoraInicio=' + HoraInicio + '&HoraFin=' + HoraFin + '&iduser=' + user + '&Almuerzo=' + Almuerzo + '&observaciones=' + observaciones + '&nombrepuesto=' + nombrepuesto+ '&Email=' + email;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        }
+
+        return false;
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+@*loader*@
+<script type="text/javascript">
+    $(window).load(function () {
+        $(".loader").fadeOut("slow");
+    });
+</script>
+
+@*Filtro por fecha seleccionada*@
+<script type="text/javascript">
+    function functionBusqueda(event) {
+
+        var FechaBusqueda = $("#FechaBusqueda").val();
+
+        if (FechaBusqueda == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+
+            location.href = '@Url.Action("Index", "MapaCompleto")?FechaBusqueda=' + FechaBusqueda;
+
+        }
+
+        return false;
+    }
+</script>
+
+@*Ingreso de horario de trabajo*@
+<script>
+    var establecerHorario = function () {
+        var fechainicial = $("#fechainicial").val();
+        var fechafin = $("#fechafin").val();
+        var horainicio = document.getElementById('horainicio').selectedOptions[0].value;
+        var horafin = document.getElementById('horafin').selectedOptions[0].value;
+        var idalmuerzo = document.getElementById('idalmuerzo').selectedOptions[0].value;
+        var puestos = $("#modal_idh").text();
+        var usuario = '@ViewBag.IdUser';
+
+        var arregloitems = [];
+
+        var coma = "";
+
+        $("#itemNov td input[type=checkbox]").each(function (index, val) {
+
+            var current = $(val).attr("Id");
+
+            var isChecked = $("#" + current).is(":checked", true);
+
+            if (isChecked) {
+                arregloitems.push(current);
+            }
+        })
+
+        if (fechainicial == "" || fechafin == "" || horainicio == "" || horafin == "" ||
+            puestos == "" || usuario == "" || idalmuerzo == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea ingresar reservas desde " + fechainicial + " hasta " + fechafin + "?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    location.href = '@Url.Action("IndexAceptarmuliple", "Horario")?ids=' + arregloitems + '&fechainicial=' + fechainicial + '&fechafin=' + fechafin + '&horainicio=' + horainicio + '&horafin=' + horafin + '&Puesto=' + puestos + '&usuarios=' + usuario + '&Almuerzo=' + idalmuerzo;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+    }
+</script>
+
+@*Estilo para ampliar el modal*@
+<style>
+    .modal-dialog2 {
+        position: relative;
+        margin: 40px;
+        width: 60%;
+        height: 90%;
+        padding: 0;
+        left: 100px;
+    }
+</style>

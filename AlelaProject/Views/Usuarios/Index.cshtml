@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<br />
+<div class="alert-danger">
+    @ViewBag.Error
+</div>
+@*Mostrar todos los permisos*@
+<div class="card shadow mb-4" style="height: 100%;">
+    <div class="card-header py-3 col-md-12">
+        <div class="col-md-9 left">
+            <div class="col-xs-12">
+                <h6 class="font-weight-bold text-primary">Usuarios</h6>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            @if (ViewBag.Datos != null)
+            {
+                <br />
+                <br />
+                <table id="tblProyecto" class="table" width="100%" style="font-family:'Trebuchet MS'">
+                    <thead>
+                        <tr>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Nombre Completo
+                            </td>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Usuario
+                            </td>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Correo
+                            </td>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Estado
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Datos)
+                        {
+                            <tr>
+                                <td>
+                                    @item.NombreCompleto
+                                </td>
+                                <td>
+                                    @item.usuarioingreso
+                                </td>
+                                <td>
+                                    @item.correo
+                                </td>
+                                @if (@item.NombreEstado == "Activo")
+                                {
+                                    <td>
+                                        <span class="badge bg-success" style="font-size:12px;color:white">@item.NombreEstado</span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <span class="badge bg-warning" style="font-size:12px;color:white">@item.NombreEstado</span>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblProyecto").DataTable({
+                language:
+                {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
+        });
+    </script>
+}

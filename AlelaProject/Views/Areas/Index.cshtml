@@ -1,0 +1,186 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> Sedes = (List<SelectListItem>)ViewBag.Data;
+}
+<br />
+<div class="alert-danger">
+    @ViewBag.Error
+</div>
+<br />
+<br />
+<div class="container row" style="font-family:sans-serif; font-size:14px">
+    <div class="col-md-12">
+        <div class="text-left">
+            <div class="text-center">
+                <h3 class="" style="font-size:35px;color:cadetblue"> Areas</h3>
+            </div>
+            <hr />
+            @*<a class="btn btn-outline-success text-right" asp-area="" href="@Url.Action("Index", "PreguntasCrear")" asp-action="Index">Nueva Pregunta</a>*@
+        </div>
+    </div>
+    <button class="btn btn-primary btn-sm" data-target="#reservasModal" data-toggle="modal">Nueva Area</button>
+    <hr />
+    <div class="col-md-12">
+        @if (ViewBag.Datos != null)
+        {
+            <br />
+            <br />
+            <table id="tblProyecto" class="table" width="100%">
+                <thead>
+                    <tr>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Sedes
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Area
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Datos)
+                    {
+                        <tr>
+                            <td>
+                                @item.NombreSede
+                            </td>
+                            <td>
+                                @item.NombreArea
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="modal" id="reservasModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <span style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Nueva Area</span>
+                                    <button class="close" data-dismiss="modal">&times;</button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-group" asp-action="Index" id="formulario" style="font-family:'Arial Rounded MT';font-weight:bold;">
+                                        <div class="form-group">
+                                            <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Seleccione Sede</label>
+                                            @Html.DropDownList("idSede", Sedes, "Selecciona Sede", new { @class = "form-control" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Nombre Area</label>
+                                            <input id="nombrearea" name="nombrearea" class="form-control" type="text" style="width:100%" />
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-outline-info" type="button" style="width:150px" onclick="functionConfirm();">Aceptar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblProyecto").DataTable({
+                language:
+                {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+<script type="text/javascript">
+
+    function functionConfirm(event) {
+
+        var idSede = document.getElementById('idSede').selectedOptions[0].value;
+        var nombrearea = $("#nombrearea").val();
+
+
+        if (idSede == "" || nombrearea == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea actualizar la información ?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    location.href = '@Url.Action("IndexPost", "Areas")?idSede=' + idSede + '&nombrearea=' + nombrearea;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+
+        return false;
+    }
+
+</script>
+

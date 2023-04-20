@@ -1,0 +1,214 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> Anio = (List<SelectListItem>)ViewBag.anio;
+    List<SelectListItem> Mes = (List<SelectListItem>)ViewBag.Mes;
+}
+
+<h2>Index</h2>
+
+<div class="card shadow col-md-12" style="height:100%">
+    <div class="card-header col-md-12">
+        <div class="col-md-12 left">
+            <div class="col-md-12">
+                <h6 class="font-weight-bold text-primary">Consulta Asistencia <span class="badge bg-blue"></span> </h6>
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Año:</label>
+                            @Html.DropDownList("anio", Anio, "Selecciona Año", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Mes:</label>
+                            @Html.DropDownList("mes", Mes, "Selecciona Mes", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="">
+                            <p></p>
+                            <button class="btn btn-warning" type="button" style="width:100px" onclick="functionBuscarApellidos();">Filtrar</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="col-md-12" style="align-content:center;text-align:right">
+                            <br />
+                            <span type="button" class="btn btn-primary fa fa-download" onclick="tableToExcel('tblProyecto', 'Datos')" value="">&nbsp; Descargar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            @if (ViewBag.DataAsistentes != null)
+            {
+                <br />
+                <br />
+                <table id="tblProyecto" class="table" width="100%" style="font-family:'Trebuchet MS'">
+                    <thead>
+                        <tr>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Nombre Completo
+                            </td>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Fecha Hora
+                            </td>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Hora Entrada
+                            </td>
+                            <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                                Hora Salida
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.DataAsistentes)
+                        {
+                            <tr>
+                                <td>
+                                    @item.first_name
+                                </td>
+                                <td>
+                                    @item.fecha
+                                </td>
+
+                                <td>
+                                    @item.Llegada
+                                </td>
+                                @if (item.variable == "S")
+                                {
+                                    <td>
+                                        <span class="badge bg-red">no salida</span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        @item.Salida
+                                    </td>
+                                }
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function functionBuscarApellidos(event) {
+
+        var anio = document.getElementById('anio').selectedOptions[0].value;
+        var mes = document.getElementById('mes').selectedOptions[0].value;
+
+        if ( anio == "" && mes == "")
+        {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else
+        {
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea filtrar la información ?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                    if (isConfirm) {
+                        location.href = '@Url.Action("Index", "ReportesAsistencias")?Ano=' + anio + '&Mes=' + mes;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+
+
+        return true;
+    }
+</script>
+
+@*Exportar a excel*@
+<script>
+    var tableToExcel = (function () {
+        var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+        return function (table, name) {
+            if (!table.nodeType) table = document.getElementById(table)
+            var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+            window.location.href = uri + base64(format(template, ctx))
+        }
+    })()
+
+    function exportTableToCSV(filename) {
+        var csv = [];
+        var rows = document.querySelectorAll("table tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll("td, th");
+
+            for (var j = 0; j < cols.length; j++)
+                row.push(cols[j].innerText);
+
+            csv.push(row.join(","));
+        }
+
+        // Download CSV file
+        downloadCSV(csv.join("n"), filename);
+    }
+
+    function downloadCSV(csv, filename) {
+        var csvFile;
+        var downloadLink;
+
+        // CSV file
+        csvFile = new Blob([csv], { type: "text/csv" });
+
+        // Download link
+        downloadLink = document.createElement("a");
+
+        // File name
+        downloadLink.download = filename;
+
+        // Create a link to the file
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+
+        // Hide download link
+        downloadLink.style.display = "none";
+
+        // Add the link to DOM
+        document.body.appendChild(downloadLink);
+
+        // Click download link
+        downloadLink.click();
+    }
+</script>

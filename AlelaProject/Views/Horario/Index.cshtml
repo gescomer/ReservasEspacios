@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> DataH = (List<SelectListItem>)ViewBag.DataH;
+    List<SelectListItem> DataF = (List<SelectListItem>)ViewBag.DataF;
+    List<SelectListItem> Puestos = (List<SelectListItem>)ViewBag.DataPuestos;
+}
+<br />
+<br />
+<div class="alert-danger">
+    @ViewBag.Error
+</div>
+<br />
+<br />
+<div class="container border">
+    <h3 class="text-info center" style="padding-top:2em;padding-left:1em">Asignación Horario</h3>
+    <hr />
+    <div class="form-group">
+        <form class="form-group" asp-action="Index" id="formulario">
+            <br />
+            <div class="row col-md-12">
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label>Fecha Inicial<span style="color:red"><b> *</b></span></label>
+                        <input id="fechainicial" name="Nombre" class="form-control" type="date" style="width:260px" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label>Fecha Final<span style="color:red"><b> *</b></span></label>
+                        <input id="fechafin" name="fechafin" class="form-control" type="date" style="width:260px" />
+                    </div>
+                </div>
+            </div>
+            <div class="row col-md-12">
+                <div class="form-group col-md-3">
+                    <label>Seleccione Hora Inicio<span style="color:red"><b> *</b></span></label>
+                    @Html.DropDownList("horainicio", DataH, "Selecciona Hora Inicio", new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Seleccione Hora Finalización<span style="color:red"><b> *</b></span></label>
+                    @Html.DropDownList("horafin", DataF, "Selecciona Hora Finalización", new { @class = "form-control" })
+                </div>
+                <div class="form-group col-md-3">
+                    <label>Seleccione El Lugar de trabajo<span style="color:red"><b> *</b></span></label>
+                    @Html.DropDownList("puestos", Puestos, "Selecciona Lugar Trabajo", new { @class = "form-control" })
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="row col-md-12 form-group">
+                <div class="col-md-6">
+                    <span style="color:red"><b> *</b></span><label>Seleccione los dias del Horario:<span style="color:red"><b> *</b></span></label>
+                </div>
+            </div>
+            <br />
+            <div class="row col-md-12">
+                <br />
+                <div class="col-md-6">
+                    @if (ViewBag.Dias != null)
+                    {
+                        foreach (var item in ViewBag.Dias)
+                        {
+                            <table><tr id="itemNov"><td><input type="checkbox" id="@item.NombreDia" checked="@item.Seleccioando" /><span style="font-size:15px;font-weight:bold; color:black">    @item.NombreDia</span></td></tr></table>
+                        }
+                    }
+                </div>
+                <br />
+                <br />
+            </div>
+            <br />
+            <br />
+            <div class="row col-md-12 form-group">
+                <span style="color:red"><b> *</b></span><label>Recuerde: que la hora de incio debe ser inferior a la hora de finalización<span style="color:red"><b> *</b></span></label>
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div class="row col-md-4">
+    <div class="form-group col-md-6 text-left" style="width:300px">
+        <button class="btn btn-info" onclick="lista();" style="width:150px">Aceptar</button>
+    </div>
+    <div class="form-group col-md-6 text-right" style="width:300px;">
+        <button class="btn btn-dark" type="button" style="width:150px" onclick="location.href='@Url.Action("GoToBack", "Horario")'">Cancelar</button>
+    </div>
+</div>
+
+<script>
+    var lista = function () {
+        var fechainicial = $("#fechainicial").val();
+        var fechafin = $("#fechafin").val();
+        var horainicio = document.getElementById('horainicio').selectedOptions[0].value;
+        var horafin = document.getElementById('horafin').selectedOptions[0].value;
+        var puestos = document.getElementById('puestos').selectedOptions[0].value;
+        var usuario = '@ViewBag.IdUser';
+        
+        var arregloitems = [];
+
+        var coma = "";
+
+        $("#itemNov td input[type=checkbox]").each(function (index, val) {
+
+            var current = $(val).attr("Id");
+
+            var isChecked = $("#" + current).is(":checked", true);
+
+            if (isChecked) {
+                arregloitems.push(current);
+            }
+
+        })
+
+        location.href = '@Url.Action("IndexAceptarmuliple", "Horario")?ids=' + arregloitems + '&fechainicial=' + fechainicial + '&fechafin=' + fechafin + '&horainicio=' + horainicio + '&horafin=' + horafin + '&Puesto=' + puestos + '&usuarios=' + usuario;
+    }
+</script>
+

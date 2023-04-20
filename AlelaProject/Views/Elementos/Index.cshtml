@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+<br />
+<div class="alert-danger">
+    @ViewBag.Error
+</div>
+<br />
+<br />
+<div class="container row" style="font-family:sans-serif; font-size:14px">
+    <div class="col-md-12">
+        <div class="text-left">
+            <div class="text-center">
+                <h3 class="" style="font-size:35px;color:cadetblue"> Elementos Trabajo</h3>
+            </div>
+            <hr />
+            @*<a class="btn btn-outline-success text-right" asp-area="" href="@Url.Action("Index", "PreguntasCrear")" asp-action="Index">Nueva Pregunta</a>*@
+        </div>
+    </div>
+    <div class="col-md-12">
+        @if (ViewBag.Datos != null)
+        {
+            <br />
+            <br />
+            <table id="tblProyecto" class="table" width="100%">
+                <thead>
+                    <tr>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Nombre Objeto
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Código
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Nombre Area
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Tipo Objeto
+                        </td>
+                        <td class="text-info" style="text-transform:capitalize;font-weight:bold;font-size:16px">
+                            Complementos
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Datos)
+                    {
+                        <tr>
+                            <td>
+                                @item.Nombre
+                            </td>
+                            <td>
+                                @item.Codigo
+                            </td>
+                            <td>
+                                @item.NombreArea
+                            </td>
+                            <td>
+                                @item.TipoObjeto
+                            </td>
+                            <td>
+                                @item.NombreComplemento
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
+</div>
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblProyecto").DataTable({
+                language:
+                {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
+        });
+    </script>
+}
+
+

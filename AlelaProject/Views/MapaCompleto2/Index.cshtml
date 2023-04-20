@@ -1,0 +1,1022 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> HoraInical = (List<SelectListItem>)ViewBag.DataH;
+    List<SelectListItem> Horaf = (List<SelectListItem>)ViewBag.DataF;
+    List<SelectListItem> Almuerzo = (List<SelectListItem>)ViewBag.Almuerzo;
+    List<SelectListItem> idAlmuerzo = (List<SelectListItem>)ViewBag.Almuerzo;
+}
+
+<div class="col-md-12 form-group border">
+    <div class="col-xs-12">
+        <span style="font-size:19px;font-family:'Arial Rounded MT';font-weight:bold"> Plano Nivel 2</span>
+    </div>
+    <div class="col-xs-12">
+        <span style="font-size:19px;font-family:'Arial Rounded MT';font-weight:bold"> Selecciona el puesto que desea reservar, llenar los datos solicitados.</span>
+    </div>
+    <br />
+</div>
+<div class="col-md-12 form-group border">
+    <div class="col-xs-12">
+        <span style="font-size:19px;font-family:'Arial Rounded MT';font-weight:bold;align-content:center"> Selecciona la Fecha que desea buscar:</span>
+    </div>
+    <div class="col-xs-12">
+        <input type="date" id="FechaBusqueda" />
+        <button class="btn  btn-info" onclick="functionBusqueda();">Buscar</button>
+    </div>
+</div>
+<div class="col-md-12 form-group border">
+    <div class="col-xs-12">
+        <span style="font-size:11px;font-family:'Arial Rounded MT';font-weight:bold"><span style="color:red;font-size:12px;font-weight:bold"> RSV: </span> <span class="badge bg-warning pull-center" style="font-size: 12px;">RESERVADO</span></span>
+    </div>
+    <br />
+</div>
+<div class="col-md-12 form-group border">
+    <div class="col-xs-12">
+        <span style="font-size:11px;font-family:'Arial Rounded MT';font-weight:bold">Cuando se filtra por fecha los puestos que aparecen en rojo son los que tienen o tuvieron reserva para ese día seleccionado. <span style="font-size:16px;">La fecha consultada es:</span> <span style="color:black;font-size:16px;" class="badge bg-blue-sky pull-center">@ViewBag.FechaConsulta</span></span>
+    </div>
+    <br />
+</div>
+
+<div class="col-md-12 form-group fondo">
+
+    <div class="loader"></div>
+
+    <!-- #region UT -->
+
+    @if (ViewBag.reservaut1 == "Si")
+    {
+        if (ViewBag.nombreReserva1215 == ViewBag.NombreCompleto)
+        {
+            <div class="UT1" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1215');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut1">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/UT1.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="UT1" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1215');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut1">
+                        <span class="texto badge bg-red">Reservado<img src="~/img/UT1.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="UT1" id="items">
+            <div class="col-sm-2 text-center" onclick="mostrarResumen('1215');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut1">
+                    <span class="texto badge bg-blue">28<img src="~/img/UT1.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+
+    }
+
+    @if (ViewBag.reservaut2 == "Si")
+    {
+        if (ViewBag.nombreReserva1216 == ViewBag.NombreCompleto)
+        {
+            <div class="UT2" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1216');">
+                    <div data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                        <i class="fa fa-desktop" style="color: #2aff00; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut2">
+                            <span class="texto badge bg-purple">AQUÍ<img src="~/img/UT2.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                        </i>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="UT2" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1216');">
+                    <div data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                        <i class="fa fa-desktop" style="color: red; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut2">
+                            <span class="texto badge bg-red">Reservado<img src="~/img/UT2.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                        </i>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="UT2" id="items">
+            <div class="col-sm-2 text-center" onclick="mostrarResumen('1216');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut2">
+                    <span class="texto badge bg-blue">29<img src="~/img/UT2.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+
+    @if (ViewBag.reservaut3 == "Si")
+    {
+        if (ViewBag.nombreReserva1217 == ViewBag.NombreCompleto)
+        {
+            <div class="UT3" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1217');">
+                    <div data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                        <i class="fa fa-desktop" style="color: #2aff00; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut3">
+                            <span class="texto badge bg-purple">AQUÍ<img src="~/img/UT3.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                        </i>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="UT3" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1217');">
+                    <div data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                        <i class="fa fa-desktop" style="color: red; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut3">
+                            <span class="texto badge bg-red">Reservado<img src="~/img/UT3.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                        </i>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="UT3" id="items">
+            <div class="col-sm-2 text-center" onclick="mostrarResumen('1217');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue; width: 18px; height: 18px" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.ut3">
+                    <span class="texto badge bg-blue">30<img src="~/img/UT3.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+    }
+    <!-- #endregion -->
+    <!-- #region UER -->
+
+    @if (ViewBag.reservauer1 == "Si")
+    {
+        if (ViewBag.nombreReserva1218 == ViewBag.NombreCompleto)
+        {
+            <div class="UER1" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1218');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer1">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/UER1.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="UER1" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1218');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer1">
+                        <span class="texto badge bg-red">Reservado<img src="~/img/UER1.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="UER1" id="items">
+            <div class="col-sm-2 text-center" onclick="mostrarResumen('1218');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer1">
+                    <span class="texto badge bg-blue">31<img src="~/img/UER1.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+
+    }
+
+    @if (ViewBag.reservauer2 == "Si")
+    {
+        if (ViewBag.nombreReserva1220 == ViewBag.NombreCompleto)
+        {
+            <div class="UER2" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1220');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer2">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/UER2.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="UER2" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1220');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer2">
+                        <span class="texto badge bg-red">Reservado<img src="~/img/UER2.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="UER2" id="items">
+            <div class="col-sm-2 text-center" onclick="mostrarResumen('1220');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer2">
+                    <span class="texto badge bg-blue">32<img src="~/img/UER2.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+
+    }
+
+    @if (ViewBag.reservauer3 == "Si")
+    {
+        if (ViewBag.nombreReserva1219 == ViewBag.NombreCompleto)
+        {
+            <div class="UER3" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1219');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: #2aff00;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer3">
+                        <span class="texto badge bg-purple">AQUÍ<img src="~/img/UER3.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+
+                    </i>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="UER3" id="items">
+                <div class="col-sm-2 text-center" onclick="mostrarResumen('1219');"
+                     data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                    <i class="fa fa-desktop" style="color: red;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer3">
+                        <span class="texto badge bg-red">Reservado<img src="~/img/UER3.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+
+                    </i>
+                </div>
+            </div>
+        }
+
+    }
+    else
+    {
+        <div class="UER3" id="items">
+            <div class="col-sm-2 text-center" onclick="mostrarResumen('1219');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="">
+                <i class="fa fa-desktop" style="color: blue;" data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.uer3">
+                    <span class="texto badge bg-blue">33<img src="~/img/UER3.jpeg" style="width:220px; height:250px;" alt="careto tooltip" /></span>
+                </i>
+            </div>
+        </div>
+
+    }
+    <!-- #endregion -->
+    <!-- #region Salas de juntas -->
+    @if (ViewBag.Reservasalajunta1 == "Si")
+    {
+        <div class="Salajuanta1">
+            <div class="" onclick="mostrarResumen('1221');" style="color:red;font-weight:bold"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.salajunta1">
+                <img src="~/img/reunion.png" width="130" height="100" />
+                <span class="texto badge bg-red">Reservada Capacidad 7 Personas<img src="~/img/salajunta1.jpeg" style="width:250px; height:250px;" alt="" /></span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="Salajuanta1">
+            <div class="" onclick="mostrarResumen('1221');"
+                 data-toggle="tooltip" data-placement="left" title="" data-original-title="@ViewBag.salajunta1">
+                <img src="~/img/reunion.png" width="130" height="100" />
+                <span class="texto badge bg-blue">Disponible Capacidad 7 Personas<img src="~/img/salajunta1.jpeg" style="width:250px; height:250px;" alt="" /></span>
+            </div>
+        </div>
+    }
+    <!-- #endregion -->
+
+</div>
+
+@*Modal Reservar Informacion*@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="resumenModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-content">
+                            <div class="modal-header bg-blue white">
+                                <h4 class="center">Resumen</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+
+                                    <label id="modal_id3" style="font-weight:bold;font-family:'Arial Rounded MT';color:black;visibility:visible"></label>
+
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Nombre Puesto / Código:</label>
+                                        <h6 id="modal_nombre" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Complementos:</label>
+                                        <h6 id="modal_complemento" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                        @*<img src="~/img/SISTEMAS1.jpeg" width="220" height="160" />*@
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Tipo:</label>
+                                        <h6 id="modal_tipo" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Area:</label>
+                                        <h6 id="modal_area" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <hr />
+                                    <div class="center">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Reservar:</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Fecha:</label>
+                                        <input id="Fechar" name="Fecha" class="form-control" type="date" style="width:100%" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Entrada:</label>
+                                        @Html.DropDownList("HoraInicior", HoraInical, "Selecciona Hora Inicial", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Salida:</label>
+                                        @Html.DropDownList("Horafr", Horaf, "Selecciona Hora Salida", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <span style="font-family:'Arial Rounded MT';color:red">Recuerda que el aforo máximo en el tiempo de almuerzo es de 7 personas(1 mesa pequeña, 2 mesa grande).</span>
+                                        <br />
+                                        <br />
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Almuerzo:</label>
+                                        @Html.DropDownList("Almuerzo2", Almuerzo, "Selecciona Hora Almuerzo", new { @class = "form-control" })
+                                    </div>
+                                    <hr />
+                                    <div style="text-align:center">
+                                        <button class="btn bg-blue" type="button" style="width:130px" onclick="functionreservarid();">Aceptar</button>  <a class="btn  bg-warning" style="width:180px;color:white;cursor:pointer" onclick="mostrarHorario();">Establecer Horario</a>   <a class="btn  bg-green" style="width: 130px; color: white; cursor: pointer" onclick="mostrarReservas();">Ver Reservas</a>
+                                    </div>
+                                </form>
+                            </div>
+                            @*<div class="modal-footer">
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*otras reservas*@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="reservasModal" tabindex="-1">
+                <div class="modal-dialog2">
+                    <div class="modal-content" style="overflow:scroll;height:600px">
+                        <div class="modal-content">
+                            <div class="modal-header bg-blue white">
+                                <h4 class="center">Reservas</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+                                    <div class="center">
+                                        <label id="red" style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Proxima Reserva</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Por:</label>
+                                        <h6 id="modal_nombrec" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Fecha:</label>
+                                        <h6 id="modal_fecha" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Desde:</label>
+                                        <h6 id="modal_horai" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Hasta:</label>
+                                        <h6 id="modal_horaf" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <hr />
+                                    <div style="text-align:center">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:white;background-color:gray">Otras Reserva</label>
+                                    </div>
+                                    <table id="tblProyecto9" class="table" width="100%">
+                                        <thead>
+                                            <tr style="text-align:center">
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Fecha
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Inicio
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Fin
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Nombre Completo
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Estatus
+                                                </th>
+                                                <th style="text-transform:capitalize;font-weight:bold;font-size:16px;color:blue">
+                                                    Almuerzo
+                                                </th>
+                                                <th style="text-transform: capitalize; font-weight: bold; font-size: 16px; color: blue">
+                                                    Observaciones
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="datosPlano2"></tbody>
+
+                                    </table>
+                                </form>
+                            </div>
+                            @*<div class="modal-footer">
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*Modal Horario*@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="horarioModal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-content" style="overflow:scroll;height:630px">
+                            <div class="modal-header bg-blue white">
+                                <h4 class="center">Establecer Horario</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+                                    <div class="center">
+                                        <label id="red" style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#BBB">Asignación de horario</label>
+                                    </div>
+                                    <span id="modal_id4" style="font-weight:bold;font-family:'Arial Rounded MT';color:black;visibility:visible"></span>
+                                    <br />
+                                    <div class="row col-md-12">
+                                        <div class="col-md-6">
+                                            <div class="form-group col-md-12">
+                                                <label>Fecha Inicial<span style="color:red"><b> *</b></span></label>
+                                                <input id="fechainicial" name="Nombre" class="form-control" type="date" style="width:260px" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group col-md-12">
+                                                <label>Fecha Final<span style="color:red"><b> *</b></span></label>
+                                                <input id="fechafin" name="fechafin" class="form-control" type="date" style="width:260px" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row col-md-12">
+                                        <div class="form-group col-md-6">
+                                            <label>Seleccione Hora Inicio<span style="color:red"><b> *</b></span></label>
+                                            @Html.DropDownList("horainicio", HoraInical, "Selecciona Hora Inicio", new { @class = "form-control" })
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Seleccione Hora Finalización<span style="color:red"><b> *</b></span></label>
+                                            @Html.DropDownList("horafin", Horaf, "Selecciona Hora Finalización", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="row col-md-12 form-group">
+                                        <span style="font-family:'Arial Rounded MT';color:red">Recuerda que el aforo máximo en el tiempo de almuerzo es de 7 personas(1 persona mesa pequeña, 2 personas mesa grande).</span>
+                                        <br />
+                                        <br />
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Almuerzo:</label>
+                                        @Html.DropDownList("idalmuerzo", idAlmuerzo, "Selecciona Hora Almuerzo", new { @class = "form-control" })
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="row col-md-12 form-group">
+                                        <div class="col-md-6">
+                                            <span style="color:red"><b> *</b></span><label>Seleccione los dias del Horario:<span style="color:red"><b> *</b></span></label>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row col-md-12">
+                                        <br />
+                                        <div class="col-md-6">
+                                            @if (ViewBag.Dias != null)
+                                            {
+                                                foreach (var item in ViewBag.Dias)
+                                                {
+                                                    <table><tr id="itemNov"><td><input type="checkbox" id="@item.NombreDia" checked="@item.Seleccioando" /><span style="font-size:15px;font-weight:bold; color:black">    @item.NombreDia</span></td></tr></table>
+                                                }
+                                            }
+                                        </div>
+                                        <br />
+                                        <br />
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="row col-md-12 form-group">
+                                        <span style="color:red"><b> *</b></span><label>Recuerde: que la hora de incio debe ser inferior a la hora de finalización<span style="color:red"><b> *</b></span></label>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn bg-blue white" type="button" style="width:150px" onclick="lista();">Aceptar</button>
+                                    </div>
+                                </form>
+                            </div>
+                            @*<div class="modal-footer">
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*Hoja de estilos*@
+<style>
+    .texto > em, .texto > img {
+        display: none;
+        font-family: sans-serif;
+    }
+
+    .progress {
+        margin: 0px;
+        width: 100%;
+        height: 20px;
+    }
+
+    .texto:hover > em, .texto:hover > img {
+        display: block;
+    }
+
+    .texto {
+        position: relative;
+        font-size: 10px;
+        font-family: 'Arial Rounded MT';
+    }
+
+        .texto > em, .texto > img {
+            display: none;
+            position: absolute;
+            top: -1em;
+            left: 2em;
+            /* Un poco de colorido */
+            border: 1px solid black;
+            width: 500px;
+            height: 300px;
+        }
+
+    .fondo {
+        background-image: url(../../img/PLANO_2.jpg);
+        width: 1000px;
+        height: 700px;
+        background-size: contain;
+        background-position: top left;
+        background-repeat: no-repeat;
+        border: solid 1px;
+    }
+
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../../img/cargando.gif') 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+
+
+    .Salajuanta1 {
+        position: absolute;
+        width: 180px;
+        height: 130px;
+        top: 42.5%;
+        left: 10.5%;
+        background-color: transparent;
+        z-index:1000;
+    }
+
+
+    /*#region UT */
+
+    .UT1 {
+        position: absolute;
+        width: 0px;
+        top: 30%;
+        left: 68%;
+        visibility:hidden;
+    }
+
+    .UT2 {
+        position: absolute;
+        width: 0px;
+        top: 30%;
+        left: 53%;
+        visibility: hidden;
+    }
+
+    .UT3 {
+        position: absolute;
+        width: 0px;
+        top: 30%;
+        left: 38%;
+        visibility: hidden;
+    }
+    /*#endregion */
+
+    /*#region UER */
+
+    .UER1 {
+        position: absolute;
+        width: 0px;
+        top: 64.5%;
+        left: 22.5%;
+        visibility: hidden;
+    }
+
+    .UER2 {
+        position: absolute;
+        width: 0px;
+        top: 64.5%;
+        left: 29%;
+        visibility: hidden;
+    }
+
+    .UER3 {
+        position: absolute;
+        width: 0px;
+        top: 59.4%;
+        left: 29%;
+        visibility: hidden;
+    }
+    /*#endregion */
+
+
+</style>
+
+@*Asignacion de informacion*@
+<script type="text/javascript">
+    function mostrarResumen(codigo) {
+
+        var v  = '@ViewBag.DatosMapa';
+
+            var array = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.Mapa>)ViewBag.DatosMapa).Select(Mapa => new
+            {
+                idObjeto = Mapa.idObjeto,
+                Nombre = Mapa.Nombre,
+                Codigo = Mapa.Codigo,
+                NombreArea = Mapa.NombreArea,
+                TipoObjeto = Mapa.TipoObjeto,
+                idArea = Mapa.idArea,
+                NombreComplemento = Mapa.NombreComplemento,
+            }) ) );
+            for (var i = 0; i < array.length; i += 1) {
+
+                if (array[i].idObjeto == codigo) {
+                    $("#modal_id3").html(array[i].idObjeto);
+                    $("#modal_id4").html(array[i].idObjeto);
+                    $("#modal_cod").html(array[i].Codigo);
+                    $("#modal_nombre").html(array[i].Nombre + ' / ' + array[i].Codigo);
+                    $("#modal_tipo").html(array[i].TipoObjeto);
+                    $("#modal_area").html(array[i].NombreArea);
+                }
+            }
+
+        var arrayComple = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.ObjetosComplementos>)ViewBag.DatosMapaCompl).Select(Mapa => new
+            {
+                idObjeto = Mapa.idObjeto,
+                Complementos = Mapa.Complementos
+            })));
+
+            for (var i = 0; i < arrayComple.length; i += 1) {
+
+                if (arrayComple[i].idObjeto == codigo) {
+                    $("#modal_complemento").html(arrayComple[i].Complementos);
+                }
+            }
+
+            var arrayReser = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.ConsultaReserva>)ViewBag.DatosReservas).Select(Mapa => new
+            {
+                Fecha = Mapa.Fecha,
+                idObjeto = Mapa.idObjeto,
+                HoraInicio = Mapa.HoraInicio,
+                HoraFin = Mapa.HoraFin,
+                NombreCompleto = Mapa.NombreCompleto,
+                FechaReserva = Mapa.FechaReserva,
+                Disponible = Mapa.Disponible,
+                NombreHora = Mapa.NombreHora,
+                observaciones=Mapa.Observaciones
+            })));
+
+            var otras = '';
+            $("#modal_nombrec").html('');
+            $("#modal_fecha").html('');
+            $("#modal_horai").html('');
+            $("#modal_horaf").html('');
+
+        document.getElementById("datosPlano2").innerHTML = "";
+        var ingreso = '1';
+        for (var i = 0; i < arrayReser.length; i += 1) {
+
+            if (arrayReser[i].idObjeto == codigo) {
+                if (arrayReser[i].Disponible == "Pendiente" || arrayReser[i].Disponible == "Hoy") {
+
+                    if (ingreso == '1') {
+                        $("#modal_nombrec").html(arrayReser[i].NombreCompleto);
+                        $("#modal_fecha").html(arrayReser[i].FechaReserva);
+                        $("#modal_horai").html(arrayReser[i].HoraInicio);
+                        $("#modal_horaf").html(arrayReser[i].HoraFin);
+                        ingreso = '0';
+                    }
+
+                    $("#datosPlano2").append(
+                        "<tr style='text-align:center'><td style='font-weight:bold'>"
+                        + arrayReser[i].FechaReserva + "</td><td>"
+                        + arrayReser[i].HoraInicio + "</td><td>"
+                        + arrayReser[i].HoraFin + "</td>" +
+                        "<td>" + arrayReser[i].NombreCompleto + "</td><td>"
+                        + arrayReser[i].Disponible + "</td><td>"
+                        + arrayReser[i].NombreHora + "</td><td>"
+                        + arrayReser[i].observaciones + "</td></tr>"
+                    );
+                    //    otras = otras + arrayReser[i].FechaReserva + ' ' + arrayReser[i].HoraInicio + ' ' + arrayReser[i].HoraFin + ' ' + arrayReser[i].NombreCompleto + ' - ' + arrayReser[i].Disponible + ' - Hora Almuerzo:' + arrayReser[i].NombreHora + ' - '+ arrayReser[i].observaciones + '<br/>';
+                }
+            }
+        }
+
+        $('#resumenModal').modal('show');
+    }
+</script>
+
+@*Mostrar modales*@
+<script type="text/javascript">
+    function mostrarReservas() {
+
+        $('#reservasModal').modal('show');
+        $('#resumenModal').modal('hide');
+    }
+</script>
+
+@*Mostrar Modales Horario*@
+<script type="text/javascript">
+    function mostrarHorario() {
+
+        $('#horarioModal').modal('show');
+        $('#resumenModal').modal('hide');
+    }
+</script>
+
+@*Reservar por una fecha*@
+<script>
+    function functionreservarid(event) {
+        var Fecha = $("#Fechar").val();
+        var user = '@ViewBag.IdUser';
+        var HoraInicio = document.getElementById('HoraInicior').selectedOptions[0].value;
+        var HoraFin = document.getElementById('Horafr').selectedOptions[0].value;
+        var almuerzo = document.getElementById('Almuerzo2').selectedOptions[0].value;
+        var idObjetod = $("#modal_id3").text();
+        var observaciones = $("#observaciones").val();
+        var contador = 0;
+        var nombrepuesto = $("#modal_nombre").text();
+        var email = '@ViewBag.CorreoElectronico';
+            /*buscamos el aforo maximo para el dia seleccinado*/
+
+        var array = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.HoraAlmuerzo>)ViewBag.almuerzoreservado).Select(Mapa => new
+            {
+                idHoraAlmuerzo = Mapa.idHoraAlmuerzo,
+                Fecha = Mapa.Fecha.ToString(),
+
+            })));
+
+        for (var i = 0; i < array.length; i += 1) {
+
+            if (array[i].Fecha == Fecha && array[i].idHoraAlmuerzo == almuerzo)
+            {
+              contador = contador + 1;
+            }
+        }
+
+        if (contador > 6) {
+            swal({
+                title: 'Error',
+                text: "Aforo maximo para la hora de almuerzo seleccionada.",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+
+            if (Fecha == "" || idObjetod == "" || HoraInicio == "" || HoraFin == "" || almuerzo == "") {
+                swal({
+                    title: 'Error',
+                    text: "Todos los campos son obligatorios",
+                    type: 'error',
+                    showCancelButton: false,
+                    cancelButtonText: 'No',
+                    cancelButtonClass: 'btn btn-danger',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonClass: 'btn btn-success'
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            }
+            else {
+                swal({
+                    title: 'Confirmación',
+                    text: "¿ Esta seguro que desea actualizar la información ?",
+                    type: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'No',
+                    cancelButtonClass: 'btn btn-danger',
+                    showConfirmButton: true,
+                    confirmButtonText: 'Si',
+                    confirmButtonClass: 'btn btn-success'
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        location.href = '@Url.Action("IndexPost", "MapaCompleto")?idObjeto=' + idObjetod + '&Fecha=' + Fecha + '&HoraInicio=' + HoraInicio + '&HoraFin=' + HoraFin + '&iduser=' + user + '&Almuerzo=' + almuerzo + '&observaciones=' + observaciones + '&nombrepuesto=' + nombrepuesto+ '&Email=' + email;
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            }
+        }
+        return false;
+    }
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+@*Loader*@
+<script type="text/javascript">
+    $(window).load(function () {
+        $(".loader").fadeOut("slow");
+    });
+</script>
+
+@*Funcion de busca*@
+<script type="text/javascript">
+    function functionBusqueda(event) {
+
+        var FechaBusqueda = $("#FechaBusqueda").val();
+
+        if (FechaBusqueda == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+
+            location.href = '@Url.Action("Index", "MapaCompleto2")?FechaBusqueda=' + FechaBusqueda;
+
+        }
+
+        return false;
+    }
+</script>
+
+@*Reservar por horario*@
+<script>
+    var lista = function () {
+        var fechainicial = $("#fechainicial").val();
+        var fechafin = $("#fechafin").val();
+        var horainicio = document.getElementById('horainicio').selectedOptions[0].value;
+        var horafin = document.getElementById('horafin').selectedOptions[0].value;
+        var puestos = $("#modal_id4").text();
+        var usuario = '@ViewBag.IdUser';
+        var arregloitems = [];
+        var idalmuerzo = document.getElementById('idalmuerzo').selectedOptions[0].value;
+        var coma = "";
+
+        $("#itemNov td input[type=checkbox]").each(function (index, val) {
+
+            var current = $(val).attr("Id");
+
+            var isChecked = $("#" + current).is(":checked", true);
+
+            if (isChecked) {
+                arregloitems.push(current);
+            }
+        })
+
+        if (fechainicial == "" || fechafin == "" || horainicio == "" || horafin == "" ||
+            puestos == "" || usuario == "" || idalmuerzo == "") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+
+
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea actualizar la información ?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    location.href = '@Url.Action("IndexAceptarmuliple", "Horario")?ids=' + arregloitems + '&fechainicial=' + fechainicial + '&fechafin=' + fechafin + '&horainicio=' + horainicio + '&horafin=' + horafin + '&Puesto=' + puestos + '&usuarios=' + usuario + '&Almuerzo=' + idalmuerzo;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+    }
+</script>
+
+@*Estilo para ampliar el modal*@
+<style>
+    .modal-dialog2 {
+        position: relative;
+        margin: 40px;
+        width: 60%;
+        height: 90%;
+        padding: 0;
+        left: 100px;
+    }
+</style>

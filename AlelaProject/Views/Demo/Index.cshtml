@@ -1,0 +1,1325 @@
+﻿
+@{ ViewBag.Title = "Inicio";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+    List<SelectListItem> Area = (List<SelectListItem>)ViewBag.Data;
+    List<SelectListItem> HoraInical = (List<SelectListItem>)ViewBag.DataH;
+    List<SelectListItem> Horaf = (List<SelectListItem>)ViewBag.DataF;
+}
+
+@section styles{
+    <style></style>
+}
+
+<br />
+<div class="alert-danger">
+    @ViewBag.Error
+</div>
+
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="reservasModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-content">
+                            <div class="modal-header">
+
+                                <span style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Nueva Reserva</span>
+                                <button class="close" data-dismiss="modal">&times;</button>
+
+                            </div>
+                            <div class="modal-body" style="font-weight:bold">
+                                <form class="form-group" asp-action="Index" id="formulario">
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Seleccione el Puesto</label>
+                                        @Html.DropDownList("idObjeto", Area, "Selecciona Puesto", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Fecha</label>
+                                        <input id="Fecha" name="Fecha" class="form-control" type="date" style="width:100%" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Entrada</label>
+                                        @Html.DropDownList("HoraInicio", HoraInical, "Selecciona Hora Inicial", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Salida</label>
+                                        @Html.DropDownList("Horaf", Horaf, "Selecciona Hora Salida", new { @class = "form-control" })
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-info" type="button" style="width:150px" onclick="functionConfirm();">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="modal" id="resumenModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="center">Resumen</h4>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-group" asp-action="Index" id="formulario">
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Códigos:</label>
+                                        <h6 id="modal_cod" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                        <label id="modal_id" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Nombre Puesto:</label>
+                                        <h6 id="modal_nombre" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Complementos:</label>
+                                        <h6 id="modal_complemento" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Tipo:</label>
+                                        <h6 id="modal_tipo" style="font-weight: bold; font-family: 'Arial Rounded MT'; color: black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Area:</label>
+                                        <h6 id="modal_area" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <hr />
+                                    <div class="center">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Reservar</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Fecha</label>
+                                        <input id="Fechar" name="Fecha" class="form-control" type="date" style="width:100%" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Entrada</label>
+                                        @Html.DropDownList("HoraInicior", HoraInical, "Selecciona Hora Inicial", new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:15px">Hora Salida</label>
+                                        @Html.DropDownList("Horafr", Horaf, "Selecciona Hora Salida", new { @class = "form-control" })
+                                    </div>
+
+                                    <hr />
+                                    <div class="center">
+                                        <label id="red" style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Ultima Reserva</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Por:</label>
+                                        <h6 id="modal_nombrec" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Fecha:</label>
+                                        <h6 id="modal_fecha" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Desde:</label>
+                                        <h6 id="modal_horai" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <div class="form-group">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Hasta:</label>
+                                        <h6 id="modal_horaf" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                    <hr />
+                                    <div class="center">
+                                        <label style="font-family:'Arial Rounded MT';font-weight:bold;font-size:20px;color:#2239eb">Otras Reserva:</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <h6 id="modal_otrasr" style="font-weight:bold;font-family:'Arial Rounded MT';color:black"></h6>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-outline-info" type="button" style="width:150px" onclick="functionreservarid();">Aceptar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div>
+    <button class="btn btn-primary btn-sm" data-target="#reservasModal" data-toggle="modal">Reservas</button>
+    <hr />
+    <span class="" style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Area Sistemas</span>
+    <div class="form-group col-md-12 fondoSistemas">
+        @if (ViewBag.ReservaActual == "Si")
+        {
+            <div class="pcSistemas2" id="items">
+                <div class="" onclick="mostrarResumen('1209');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.PSistemasCom">
+                    <img src="~/img/Reservado.png" class="tams" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="pcSistemas2" id="items">
+                <div class="" onclick="mostrarResumen('1209');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.PSistemasCom">
+                    <img src="~/img/PC.png" class="tams" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.ReservaActualOscar == "Si")
+        {
+            <div class="pcSistemas1" id="items">
+                <div class="" onclick="mostrarResumen('1210');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.PuestoOscar">
+                    <img src="~/img/Reservado.png" class="tams" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="pcSistemas1" id="items">
+                <div class="" onclick="mostrarResumen('1210');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.PuestoOscar">
+                    <img src="~/img/PC.png" class="tams" />
+                </div>
+            </div>
+        }
+
+
+    </div>
+    <br />
+    <span class="center" style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Area Gescomer</span>
+    <div class="form-group col-md-12 fondoGescomer">
+        @if (ViewBag.reservagescomer1 == "Si")
+        {
+            <div class="gescomer1" id="items">
+                <div class="" onclick="mostrarResumen('1190');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer1">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="gescomer1" id="items">
+                <div class="" onclick="mostrarResumen('1190');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer1">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservagescomer2 == "Si")
+        {
+            <div class="gescomer2" id="items">
+                <div class="" onclick="mostrarResumen('1191');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer2">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="gescomer2" id="items">
+                <div class="" onclick="mostrarResumen('1191');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer2">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservagescomer3 == "Si")
+        {
+            <div class="gescomer3" id="items">
+                <div class="" onclick="mostrarResumen('1192');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer3">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="gescomer3" id="items">
+                <div class="" onclick="mostrarResumen('1192');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer3">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservagescomer4 == "Si")
+        {
+            <div class="gescomer4" id="items">
+                <div class="" onclick="mostrarResumen('1193');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer4">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="gescomer4" id="items">
+                <div class="" onclick="mostrarResumen('1193');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer4">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservagescomer5 == "Si")
+        {
+            <div class="gescomer5" id="items">
+                <div class="" onclick="mostrarResumen('1194');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer5">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="gescomer5" id="items">
+                <div class="" onclick="mostrarResumen('1194');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer5">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservagescomer6 == "Si")
+        {
+            <div class="gescomer6" id="items">
+                <div class="" onclick="mostrarResumen('1195');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer6">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="gescomer6" id="items">
+                <div class="" onclick="mostrarResumen('1195');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.gescomer6">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+    </div>
+    <br />
+    <span class="center" style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Area Comercial</span>
+    <div class="form-group col-md-12 fondoComercial">
+
+        @if (ViewBag.reservacomercial1 == "Si")
+        {
+            <div class="comercial1" id="items">
+                <div class="" onclick="mostrarResumen('1196');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.comercial1">
+                    <img src="~/img/Reservado.png" class="tams" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comercial1" id="items">
+                <div class="" onclick="mostrarResumen('1196');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.comercial1">
+                    <img src="~/img/PC.png" class="tams" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservacomercial2 == "Si")
+        {
+            <div class="comercial2" id="items">
+                <div class="" onclick="mostrarResumen('1197');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.comercial2">
+                    <img src="~/img/Reservado.png" class="tams" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comercial2" id="items">
+                <div class="" onclick="mostrarResumen('1197');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.comercial2">
+                    <img src="~/img/PC.png" class="tams" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservacomercial3 == "Si")
+        {
+            <div class="comercial3" id="items">
+                <div class="" onclick="mostrarResumen('1198');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.comercial3">
+                    <img src="~/img/Reservado.png" class="tams" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comercial3" id="items">
+                <div class="" onclick="mostrarResumen('1198');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.comercial3">
+                    <img src="~/img/PC.png" class="tams" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservacomercial4 == "Si")
+        {
+            <div class="comercial4" id="items">
+                <div class="" onclick="mostrarResumen('1199');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.comercial4">
+                    <img src="~/img/Reservado.png" class="tams" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="comercial4" id="items">
+                <div class="" onclick="mostrarResumen('1199');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.comercial4">
+                    <img src="~/img/PC.png" class="tams" />
+                </div>
+            </div>
+        }
+
+    </div>
+    <br />
+    <span class="center" style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Area Contabilidad</span>
+    <div class="form-group col-md-12 fondoContabilidad">
+
+        @if (ViewBag.reservacontabilidad1 == "Si")
+        {
+            <div class="contabilidad1" id="items">
+                <div class="" onclick="mostrarResumen('1205');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad1">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad1" id="items">
+                <div class="" onclick="mostrarResumen('1205');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad1">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservacontabilidad2 == "Si")
+        {
+            <div class="contabilidad2" id="items">
+                <div class="" onclick="mostrarResumen('1206');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad2">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad2" id="items">
+                <div class="" onclick="mostrarResumen('1206');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad2">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+        @if (ViewBag.reservacontabilidad3 == "Si")
+        {
+            <div class="contabilidad3" id="items">
+                <div class="" onclick="mostrarResumen('1207');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad3">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad3" id="items">
+                <div class="" onclick="mostrarResumen('1207');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad3">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservacontabilidad4 == "Si")
+        {
+            <div class="contabilidad4" id="items">
+                <div class="" onclick="mostrarResumen('1208');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad4">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad4" id="items">
+                <div class="" onclick="mostrarResumen('1208');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad4">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservacontabilidad5 == "Si")
+        {
+            <div class="contabilidad5" id="items">
+                <div class="" onclick="mostrarResumen('1211');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad5">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad5" id="items">
+                <div class="" onclick="mostrarResumen('1211');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad5">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+        @if (ViewBag.reservacontabilidad6 == "Si")
+        {
+            <div class="contabilidad6" id="items">
+                <div class="" onclick="mostrarResumen('1212');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad6">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad6" id="items">
+                <div class="" onclick="mostrarResumen('1212');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad6">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+        @if (ViewBag.reservacontabilidad7 == "Si")
+        {
+            <div class="contabilidad7" id="items">
+                <div class="" onclick="mostrarResumen('1213');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad7">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad7" id="items">
+                <div class="" onclick="mostrarResumen('1213');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad7">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+        @if (ViewBag.reservacontabilidad8 == "Si")
+        {
+            <div class="contabilidad8" id="items">
+                <div class="" onclick="mostrarResumen('1214');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad8">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="contabilidad8" id="items">
+                <div class="" onclick="mostrarResumen('1214');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.contabilidad8">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+    </div>
+    <br />
+    <span class="center" style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Area Compras</span>
+    <div class="form-group col-md-12 fondoCompras">
+
+        @if (ViewBag.reservacompra0 == "Si")
+        {
+            <div class="compra0" id="items">
+                <div class="" onclick="mostrarResumen('1200');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra0">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compra0" id="items">
+                <div class="" onclick="mostrarResumen('1200');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra0">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservacompra1 == "Si")
+        {
+            <div class="compra1" id="items">
+                <div class="" onclick="mostrarResumen('1201');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra1">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compra1" id="items">
+                <div class="" onclick="mostrarResumen('1201');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra1">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservacompra2 == "Si")
+        {
+            <div class="compra2" id="items">
+                <div class="" onclick="mostrarResumen('1202');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra2">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compra2" id="items">
+                <div class="" onclick="mostrarResumen('1202');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra2">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+        @if (ViewBag.reservacompra3 == "Si")
+        {
+            <div class="compra3" id="items">
+                <div class="" onclick="mostrarResumen('1203');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra3">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compra3" id="items">
+                <div class="" onclick="mostrarResumen('1203');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra3">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+        @if (ViewBag.reservacompra4 == "Si")
+        {
+            <div class="compra4" id="items">
+                <div class="" onclick="mostrarResumen('1204');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra4">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="compra4" id="items">
+                <div class="" onclick="mostrarResumen('1204');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.compra4">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+    </div>
+    <br />
+    <span class="center" style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">UER</span>
+    <div class="form-group col-md-12 fondouer">
+
+        @if (ViewBag.reservauer1 == "Si")
+        {
+            <div class="uer1" id="items">
+                <div class="" onclick="mostrarResumen('1218');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.uer1">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="uer1" id="items">
+                <div class="" onclick="mostrarResumen('1218');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.uer1">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+        @if (ViewBag.reservauer2 == "Si")
+        {
+            <div class="uer2" id="items">
+                <div class="" onclick="mostrarResumen('1219');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.uer2">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="uer2" id="items">
+                <div class="" onclick="mostrarResumen('1219');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.uer2">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+        @if (ViewBag.reservauer3 == "Si")
+        {
+            <div class="uer3" id="items">
+                <div class="" onclick="mostrarResumen('1220');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.uer3">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="uer3" id="items">
+                <div class="" onclick="mostrarResumen('1220');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.uer3">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+    </div>
+    <br />
+    <span class="center" style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">UT (UNIDAD TÉCNICA)</span>
+    <div class="form-group col-md-12 fondout">
+
+        @if (ViewBag.reservaut1 == "Si")
+        {
+            <div class="ut1" id="items">
+                <div class="" onclick="mostrarResumen('1215');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.ut1">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ut1" id="items">
+                <div class="" onclick="mostrarResumen('1215');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.ut1">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservaut2 == "Si")
+        {
+            <div class="ut2" id="items">
+                <div class="" onclick="mostrarResumen('1216');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.ut2">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ut2" id="items">
+                <div class="" onclick="mostrarResumen('1216');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.ut2">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.reservaut2 == "Si")
+        {
+            <div class="ut3" id="items">
+                <div class="" onclick="mostrarResumen('1217');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.ut3">
+                    <img src="~/img/Reservado.png" class="tam" />
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="ut3" id="items">
+                <div class="" onclick="mostrarResumen('1217');"
+                     data-toggle="tooltip" data-placement="bottom" title="" data-original-title="@ViewBag.ut3">
+                    <img src="~/img/PC.png" class="tam" />
+                </div>
+            </div>
+        }
+    </div>
+    <br />
+    <span class="center" style="font-size:16px;color:cadetblue;font-family:'Arial Rounded MT'">Auditorios</span>
+    <div class="card">
+        <div class="row mx-2 py-2 justify-content-center align-items-center" id="items">
+            @if (ViewBag.DatosMapa != null)
+            {
+                foreach (var item in ViewBag.DatosMapa)
+                {
+                    if (item.idArea == "1161")
+                    {
+                        foreach (var itemC in ViewBag.DatosMapaCompl)
+                        {
+                            if (item.idObjeto == itemC.idObjeto)
+                            {
+                                ViewBag.Complementos = itemC.Complementos;
+
+                            }
+                        }
+
+                        <div class="col-sm-2 col-6 text-center verdes cursor" onclick="mostrarResumen(@item.idObjeto);"
+                             data-toggle="tooltip" data-placement="top" title="" data-original-title="@item.Codigo @ViewBag.Complementos">
+                            @*<i class="fa fa-desktop fa-align-center" style="font-size:50px"></i>*@
+                            <img src="~/img/auditorio.png" width="70" height="70" />
+                            <div style="font-weight:bold;font-family:'Arial Rounded MT'">@item.TipoObjeto - <span style="color:blue">@item.Nombre</span></div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/lib/datatables.net/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatables.net-bs4/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblProyectoS").DataTable({
+                language:
+                {
+                    "sProcessing": "Procesando...",
+                    "sLengthMenu": "Mostrar _MENU_ registros",
+                    "sZeroRecords": "No se encontraron resultados",
+                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                    "sInfoPostFix": "",
+                    "sSearch": "Buscar:",
+                    "sUrl": "",
+                    "sInfoThousands": ",",
+                    "sLoadingRecords": "Cargando...",
+                    "oPaginate": {
+                        "sFirst": "Primero",
+                        "sLast": "Último",
+                        "sNext": "Siguiente",
+                        "sPrevious": "Anterior"
+                    },
+                    "oAria": {
+                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                    },
+                    "buttons": {
+                        "copy": "Copiar",
+                        "colvis": "Visibilidad"
+                    }
+                }
+            });
+        });
+    </script>
+
+
+}
+<style>
+    .tam {
+        width: 35px;
+        height: 35px;
+    }
+
+    /*#region AREA SISTEMAS */
+    .tams {
+        width: 55px;
+        height: 55px;
+    }
+
+    .fondoSistemas {
+        background-image: url(../../img/st.PNG);
+        width: 100%;
+        height: 105vh;
+        background-size: cover;
+        background-position: unset;
+        position:page ;
+    }
+
+    .pcSistemas2 {
+        position: static;
+        width: 40px;
+        transform: translate(700px,370px);
+    }
+
+    .pcSistemas1 {
+        position: static;
+        width: 40px;
+        transform: translate(375px,175px);
+    }
+
+    /*#endregion */
+
+    /*#region AREA GESCOMER */
+
+    .fondoGescomer {
+        background-image: url(../../img/gescomer.png);
+        width: 100%;
+        height: 150vh;
+        background-size: cover;
+        background-position: center;
+        position: static;
+    }
+
+    .gescomer1 {
+        position: static;
+        width: 40px;
+        transform: translate(495px,425px);
+    }
+
+    .gescomer2 {
+        position: static;
+        width: 40px;
+        transform: translate(390px,395px);
+    }
+
+    .gescomer3 {
+        position: static;
+        width: 40px;
+        transform: translate(290px,359px);
+    }
+
+    .gescomer4 {
+        position: static;
+        width: 40px;
+        transform: translate(495px,265px);
+    }
+
+    .gescomer5 {
+        position: static;
+        width: 40px;
+        transform: translate(390px,235px);
+    }
+
+    .gescomer6 {
+        position: static;
+        width: 40px;
+        transform: translate(180px,205px);
+    }
+
+
+    /*#endregion */
+
+    /*#region AREA COMERCIAL */
+
+    .fondoComercial {
+        background-image: url(../../img/COMERCIAL.png);
+        width: 100%;
+        height: 100vh;
+        background-size: cover;
+        background-position: unset;
+        position: static;
+    }
+
+    .comercial1 {
+        position: static;
+        width: 40px;
+        transform: translate(415px,200px);
+    }
+
+    .comercial2 {
+        position: static;
+        width: 40px;
+        transform: translate(555px,145px);
+    }
+
+    .comercial3 {
+        position: static;
+        width: 40px;
+        transform: translate(645px,335px);
+    }
+
+    .comercial4 {
+        position: static;
+        width: 40px;
+        transform: translate(355px,285px);
+    }
+    /*#endregion */
+
+    /*#region AREA CONTABILIDAD */
+
+    .fondoContabilidad {
+        background-image: url(../../img/CONTABILIDAD.PNG);
+        width: 100%;
+        height: 85vh;
+        background-size: cover;
+        background-position: unset;
+        position: static;
+    }
+
+    .contabilidad1 {
+        position: static;
+        width: 40px;
+        transform: translate(275px,255px);
+    }
+
+    .contabilidad2 {
+        position: static;
+        width: 40px;
+        transform: translate(395px,220px);
+    }
+
+    .contabilidad3 {
+        position: static;
+        width: 40px;
+        transform: translate(275px,250px);
+    }
+
+    .contabilidad4 {
+        position: static;
+        width: 40px;
+        transform: translate(395px,215px);
+    }
+
+    .contabilidad5 {
+        position: static;
+        width: 40px;
+        transform: translate(595px,235px);
+    }
+
+    .contabilidad6 {
+        position: static;
+        width: 40px;
+        transform: translate(705px,195px);
+    }
+
+    .contabilidad7 {
+        position: static;
+        width: 40px;
+        transform: translate(705px,105px);
+    }
+
+    .contabilidad8 {
+        position: static;
+        width: 40px;
+        transform: translate(595px,70px);
+    }
+    /*#endregion */
+
+    /*#region AREA COMPRAS */
+
+    .fondoCompras {
+        background-image: url(../../img/COMPRAS.png);
+        width: 100%;
+        height: 150vh;
+        background-size: cover;
+        background-position: center;
+        position: static;
+    }
+
+    .compra0 {
+        position: static;
+        width: 40px;
+        transform: translate(540px,700px);
+    }
+
+    .compra1 {
+        position: static;
+        width: 40px;
+        transform: translate(410px,666px);
+    }
+    .compra2 {
+        position: static;
+        width: 40px;
+        transform: translate(390px,470px);
+    }
+    .compra3 {
+        position: static;
+        width: 40px;
+        transform: translate(390px,350px);
+    }
+    .compra4 {
+        position: static;
+        width: 40px;
+        transform: translate(410px,230px);
+    }
+    /*#endregion */
+
+    /*#region AREA UT */
+
+    .fondout {
+        background-image: url(../../img/UT.png);
+        width: 100%;
+        height: 70vh;
+        background-size: cover;
+        background-position: center;
+        position: static;
+    }
+
+    .ut1 {
+        position: static;
+        width: 40px;
+        transform: translate(630px,70px);
+    }
+    .ut2 {
+        position: static;
+        width: 40px;
+        transform: translate(470px,35px);
+    }
+    .ut3 {
+        position: static;
+        width: 40px;
+        transform: translate(300px,0px);
+    }
+    /*#endregion */
+
+    /*#region AREA UT */
+
+    .fondouer {
+        background-image: url(../../img/UER.png);
+        width: 100%;
+        height: 45vh;
+        background-size: cover;
+        background-position: center;
+        position: static;
+    }
+    .uer1 {
+        position: static;
+        width: 40px;
+        transform: translate(530px,190px);
+    }
+    .uer2 {
+        position: static;
+        width: 40px;
+        transform: translate(447px,155px);
+    }
+    .uer3 {
+        position: static;
+        width: 40px;
+        transform: translate(530px,85px);
+    }
+
+    /*#endregion */
+
+</style>
+
+<script type="text/javascript">
+
+    function functionConfirm(event) {
+
+        var idObjetod = document.getElementById('idObjeto').selectedOptions[0].value;
+        var Fecha = $("#Fecha").val();
+        var HoraInicio = document.getElementById('HoraInicio').selectedOptions[0].value;
+        var HoraFin = document.getElementById('Horaf').selectedOptions[0].value;
+
+        if (Fecha == "" || idObjetod == "" || HoraInicio == "" || HoraFin=="") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea actualizar la información ?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    location.href = '@Url.Action("IndexPost", "Demo")?idObjeto=' + idObjetod + '&Fecha=' + Fecha + '&HoraInicio=' + HoraInicio + '&HoraFin=' + HoraFin;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+
+        return false;
+    }
+
+</script>
+
+<script type="text/javascript">
+    function mostrarResumen(codigo) {
+        var v  = '@ViewBag.DatosMapa';
+
+        //if (v != undefined) {
+            var array = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.Mapa>)ViewBag.DatosMapa).Select(Mapa => new
+            {
+                idObjeto = Mapa.idObjeto,
+                Nombre = Mapa.Nombre,
+                Codigo = Mapa.Codigo,
+                NombreArea = Mapa.NombreArea,
+                TipoObjeto = Mapa.TipoObjeto,
+                idArea = Mapa.idArea,
+                NombreComplemento = Mapa.NombreComplemento,
+            }) ) );
+            for (var i = 0; i < array.length; i += 1) {
+
+                if (array[i].idObjeto == codigo) {
+                    $("#modal_id").html(array[i].idObjeto);
+                    $("#modal_cod").html(array[i].Codigo);
+                    $("#modal_nombre").html(array[i].Nombre);
+                    $("#modal_tipo").html(array[i].TipoObjeto);
+                    $("#modal_area").html(array[i].NombreArea);
+                }
+            }
+
+        //}
+
+        @*if (@ViewBag.DatosMapaCompl != null) {*@
+
+            var arrayComple = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.ObjetosComplementos>)ViewBag.DatosMapaCompl).Select(Mapa => new
+            {
+                idObjeto = Mapa.idObjeto,
+                Complementos = Mapa.Complementos,
+            })));
+
+
+            for (var i = 0; i < arrayComple.length; i += 1) {
+
+                if (arrayComple[i].idObjeto == codigo) {
+                    $("#modal_complemento").html(arrayComple[i].Complementos);
+                }
+            }
+        //}
+
+        @*if (@ViewBag.DatosReservas != null) {*@
+            var arrayReser = @Html.Raw(Json.Encode(
+            ((IEnumerable<AlelaProject.Models.ConsultaReserva>)ViewBag.DatosReservas).Select(Mapa => new
+            {
+                Fecha = Mapa.Fecha,
+                idObjeto = Mapa.idObjeto,
+                HoraInicio = Mapa.HoraInicio,
+                HoraFin = Mapa.HoraFin,
+                NombreCompleto = Mapa.NombreCompleto,
+                FechaReserva = Mapa.FechaReserva,
+            })));
+
+            var otras = '';
+            var ingreso = true;
+            $("#modal_nombrec").html('');
+            $("#modal_fecha").html('');
+            $("#modal_horai").html('');
+            $("#modal_horaf").html('');
+
+            for (var i = 0; i < arrayReser.length; i += 1) {
+
+                if (arrayReser[i].idObjeto == codigo) {
+                    if (ingreso == true) {
+                        $("#modal_nombrec").html(arrayReser[i].NombreCompleto);
+                        $("#modal_fecha").html(arrayReser[i].FechaReserva);
+                        $("#modal_horai").html(arrayReser[i].HoraInicio);
+                        $("#modal_horaf").html(arrayReser[i].HoraFin);
+                        ingreso = false;
+                    }
+
+                    otras = otras + arrayReser[i].FechaReserva + ' ' + arrayReser[i].HoraInicio + ' ' + arrayReser[i].HoraFin + ' ' + arrayReser[i].NombreCompleto + '<br/>';
+
+                }
+
+                $("#modal_otrasr").html(otras);
+
+            }
+
+        //}
+
+        $('#resumenModal').modal('show');
+    }
+</script>
+
+<script>
+    function resumen() {
+
+        $('#resumenModal').modal('hide');
+        $('#reservasModal').modal('show');
+
+    }
+</script>
+
+<script>
+    function functionreservarid(event) {
+        var Fecha = $("#Fechar").val();
+        var HoraInicio = document.getElementById('HoraInicior').selectedOptions[0].value;
+        var HoraFin = document.getElementById('Horafr').selectedOptions[0].value;
+        var idObjetod = $("#modal_id").text();
+
+        if (Fecha == "" || idObjetod == "" || HoraInicio == "" || HoraFin=="") {
+            swal({
+                title: 'Error',
+                text: "Todos los campos son obligatorios",
+                type: 'error',
+                showCancelButton: false,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Aceptar',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+        else {
+            swal({
+                title: 'Confirmación',
+                text: "¿ Esta seguro que desea actualizar la información ?",
+                type: 'warning',
+                showCancelButton: true,
+                cancelButtonText: 'No',
+                cancelButtonClass: 'btn btn-danger',
+                showConfirmButton: true,
+                confirmButtonText: 'Si',
+                confirmButtonClass: 'btn btn-success'
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    location.href = '@Url.Action("IndexPost", "Demo")?idObjeto=' + idObjetod + '&Fecha=' + Fecha + '&HoraInicio=' + HoraInicio + '&HoraFin=' + HoraFin;
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+
+        return false;
+    }
+</script>
