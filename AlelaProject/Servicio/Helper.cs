@@ -47,6 +47,7 @@ namespace AlelaProject.Servicio
                     {
                         if (i == 0)
                         {
+
                             sb[i] = char.ToUpper(sb[i]);
                         }
                         else
